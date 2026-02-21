@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     public ControlType controlType;
     private Vector3 currentInputDirection;
     [SerializeField] private KeyCode buildKey = KeyCode.E;
-    [SerializeField] private GridManager gridManager;
+    // [SerializeField] private GridManager gridManager;
 
     [Header("Movement Settings")]
     [SerializeField] private float moveForce = 20f;
@@ -28,6 +28,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private KeyCode attackKey = KeyCode.Space;
     [SerializeField] private LayerMask destructibleLayer;
 
+    [SerializeField] public Animator animator;
+    
     private float nextAttackTime;
 
     private Rigidbody rb;
@@ -35,28 +37,35 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        if (animator == null)
+        animator = GetComponentInChildren<Animator>();
     }
 
-    private void FixedUpdate()
-    {
-        Vector3 inputDirection = GetInput();
-        currentInputDirection = inputDirection;
-
-        Move(inputDirection);
-        ClampVelocity();
-        RotateTowardsInput(); // changed
-    }
     private void Update()
     {
+        currentInputDirection = GetInput();
+
         if (Input.GetKey(attackKey))
         {
+            animator.SetBool("Mining", true);
             TryAttack();
+        }
+        else
+        {
+            animator.SetBool("Mining", false);
         }
 
         if (Input.GetKeyDown(buildKey))
         {
             TryBuild();
         }
+    }
+    private void FixedUpdate()
+    {
+        Move(currentInputDirection);
+        ClampVelocity();
+        RotateTowardsInput();
+        UpdateAnimator();
     }
 
     private Vector3 GetInput()
@@ -139,25 +148,35 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-    private void TryBuild()
+    // private void TryBuild()
+    // {
+    //     if (gridManager == null)
+    //         return;
+
+    //     // Always build exactly one grid cell in front
+    //     float buildDistance = gridManager.gridSize;
+
+    //     Vector3 buildWorldPos = transform.position + transform.forward * buildDistance;
+
+    //     // Convert world position to grid position using GridManager
+    //     Vector3Int gridPos = gridManager.WorldToGrid(buildWorldPos);
+
+    //     // Prevent building inside player's current grid cell
+    //     Vector3Int playerGridPos = gridManager.WorldToGrid(transform.position);
+    //     if (gridPos == playerGridPos)
+    //         return;
+
+    //     gridManager.TryAddBlock(gridPos);
+    // }
+    private void UpdateAnimator()
     {
-        if (gridManager == null)
-            return;
+        if (animator == null)
+            return; 
 
-        // Always build exactly one grid cell in front
-        float buildDistance = gridManager.gridSize;
+        Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+        float speed = horizontalVelocity.magnitude;
 
-        Vector3 buildWorldPos = transform.position + transform.forward * buildDistance;
-
-        // Convert world position to grid position using GridManager
-        Vector3Int gridPos = gridManager.WorldToGrid(buildWorldPos);
-
-        // Prevent building inside player's current grid cell
-        Vector3Int playerGridPos = gridManager.WorldToGrid(transform.position);
-        if (gridPos == playerGridPos)
-            return;
-
-        gridManager.TryAddBlock(gridPos);
+        animator.SetFloat("Speed", speed, 0.1f, Time.fixedDeltaTime);
     }
     private void OnDrawGizmosSelected()
     {
