@@ -1,0 +1,125 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &40205402429349059
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3868068818804122255}
+  - component: {fileID: 3592076978050494534}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3868068818804122255
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 40205402429349059}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.89081, y: -0.947, z: -2.54298}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3592076978050494534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 40205402429349059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c89e2f8fbdc01514a9f6f2b970083d28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioManager
+  sounds:
+  - name: Steps_1
+    clip: {fileID: 8300000, guid: 6c477f4da034c0148946c437df5765f4, type: 3}
+    volume: 0.2
+    pitch: 0
+    loop: 1
+    source: {fileID: 0}
+  - name: Steps_2
+    clip: {fileID: 8300000, guid: cd24b0b44239122438477f655aebf668, type: 3}
+    volume: 0.2
+    pitch: 0
+    loop: 1
+    source: {fileID: 0}
+  - name: Mining
+    clip: {fileID: 8300000, guid: c76744841322fc045985efb49ca8ede3, type: 3}
+    volume: 0.3
+    pitch: 0
+    loop: 1
+    source: {fileID: 0}
+  - name: Rock_Destroy_1
+    clip: {fileID: 8300000, guid: d50ca9f0d09c60a4fba4285d60812603, type: 3}
+    volume: 0.3
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: Rock_Destroy_2
+    clip: {fileID: 8300000, guid: d8fcf3bd2fc869b4db15beb64fa08c3e, type: 3}
+    volume: 0.3
+    pitch: 0.1
+    loop: 0
+    source: {fileID: 0}
+  - name: Rock_Throw
+    clip: {fileID: 8300000, guid: 90937f306e1cc404087c8b7d9c24705a, type: 3}
+    volume: 0.3
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: Grunt_1
+    clip: {fileID: 8300000, guid: 60194a88f1ebb8f49afa402e184bae97, type: 3}
+    volume: 0.4
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: Grunt_2
+    clip: {fileID: 8300000, guid: 4dc08ad4b302a95439504a3202674a12, type: 3}
+    volume: 0
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: Chest_Drop
+    clip: {fileID: 8300000, guid: 947a5b6b9a9342e408fa42bfbff16a8a, type: 3}
+    volume: 0.3
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: Elevator_Ambience
+    clip: {fileID: 8300000, guid: 6946e369272f14a49b78228e2f0069e9, type: 3}
+    volume: 0.2
+    pitch: 0
+    loop: 1
+    source: {fileID: 0}
+  - name: Elevator_Open
+    clip: {fileID: 8300000, guid: 5671b3232dad2764abc32c0745c1dffd, type: 3}
+    volume: 0.3
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: Elevator_Ding
+    clip: {fileID: 8300000, guid: 442b9e4aaf3378b4a84cfe69984ef919, type: 3}
+    volume: 0.35
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: Block_drop
+    clip: {fileID: 8300000, guid: b48435a797ba92c428b26e18c9950c35, type: 3}
+    volume: 0.35
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
