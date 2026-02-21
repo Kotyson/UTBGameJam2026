@@ -1,12 +1,13 @@
 using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-// Díky tomuto atributu se tøída zobrazí v Unity Inspectoru
+// Dï¿½ky tomuto atributu se tï¿½ï¿½da zobrazï¿½ v Unity Inspectoru
 [System.Serializable]
 public class Sound
 {
-    public string name; // Klíè, podle kterého se bude zvuk volat
-    public AudioClip clip;
+    public string name; // Klï¿½ï¿½, podle kterï¿½ho se bude zvuk volat
+    public AudioClip[] clip;
 
     [Range(0f, 1f)]
     public float volume = 1f;
@@ -15,26 +16,26 @@ public class Sound
 
     public bool loop;
 
-    // Skryjeme v Inspectoru, AudioSource se vytvoøí automaticky
+    // Skryjeme v Inspectoru, AudioSource se vytvoï¿½ï¿½ automaticky
     [HideInInspector]
     public AudioSource source;
 }
 
 public class AudioManager : MonoBehaviour
 {
-    // Statická instance (Singleton)
+    // Statickï¿½ instance (Singleton)
     public static AudioManager Instance;
 
-    // Pole všech zvukù, které si nastavíš v Inspectoru
+    // Pole vï¿½ech zvukï¿½, kterï¿½ si nastavï¿½ v Inspectoru
     public Sound[] sounds;
 
     void Awake()
     {
-        // Zajištìní Singleton patternu (aby existoval vždy jen jeden AudioManager)
+        // Zajiï¿½tï¿½nï¿½ Singleton patternu (aby existoval vï¿½dy jen jeden AudioManager)
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Zabrání znièení pøi naètení nové scény
+            DontDestroyOnLoad(gameObject); // Zabrï¿½nï¿½ zniï¿½enï¿½ pï¿½i naï¿½tenï¿½ novï¿½ scï¿½ny
         }
         else
         {
@@ -42,29 +43,32 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
-        // Pro každý zvuk ze seznamu vytvoøíme vlastní AudioSource
+        // Pro kaï¿½dï¿½ zvuk ze seznamu vytvoï¿½ï¿½me vlastnï¿½ AudioSource
         foreach (Sound s in sounds)
         {
+            s.pitch = 1.0f;
             s.source = gameObject.AddComponent<AudioSource>();
-            s.source.clip = s.clip;
+            s.source.clip = s.clip[0];
             s.source.volume = s.volume;
-            s.source.pitch = s.pitch;
+            s.source.pitch = 1.0f;
             s.source.loop = s.loop;
         }
     }
 
-    // Metoda, kterou bude volat tvùj kamarád
+    // Metoda, kterou bude volat tvï¿½j kamarï¿½d
     public void Play(string name)
     {
-        // Najde zvuk podle zadaného jména
+        // Najde zvuk podle zadanï¿½ho jmï¿½na
         Sound s = Array.Find(sounds, sound => sound.name == name);
 
         if (s == null)
         {
-            Debug.LogWarning("Zvuk s názvem: " + name + " nebyl nalezen!");
+            Debug.LogWarning("Zvuk s nï¿½zvem: " + name + " nebyl nalezen!");
             return;
         }
-
+        Debug.Log("Playing sound " +  name);
+        
+        s.source.clip = s.clip[Random.Range(0, s.clip.Length)];
         s.source.Play();
     }
 }

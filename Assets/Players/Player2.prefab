@@ -249,11 +249,11 @@ MonoBehaviour:
     m_Bits: 8
   playerLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   knockbackForce: 50
-  pickupThrowKey: 101
+  pickupThrowKey: 305
   holdPoint: {fileID: 250851125568471669}
-  pickupRadius: 0.5
+  pickupRadius: 0.7
   itemLayer:
     serializedVersion: 2
     m_Bits: 64

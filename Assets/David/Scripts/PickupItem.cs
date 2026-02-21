@@ -14,12 +14,11 @@ public class PickupItem : MonoBehaviour
     private bool canBePickedUp = true;
 
     public bool IsThrown { get; private set; } = false;
-
+    
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         col = GetComponent<Collider>();
-
         // P�edm�t se neh�be dokud le�� na zemi
         //Freeze();
     }
@@ -35,7 +34,6 @@ public class PickupItem : MonoBehaviour
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
         //Dont allow picking up if the item is in cooldown of destroying after collision
-
         
     }
 

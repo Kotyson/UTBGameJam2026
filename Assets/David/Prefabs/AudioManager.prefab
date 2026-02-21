@@ -46,86 +46,109 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
   sounds:
   - name: Steps_1
-    clip: {fileID: 8300000, guid: 6c477f4da034c0148946c437df5765f4, type: 3}
+    clip:
+    - {fileID: 8300000, guid: 6c477f4da034c0148946c437df5765f4, type: 3}
+    - {fileID: 8300000, guid: cd24b0b44239122438477f655aebf668, type: 3}
     volume: 0.2
-    pitch: 0
+    pitch: 1
     loop: 1
     source: {fileID: 0}
   - name: Steps_2
-    clip: {fileID: 8300000, guid: cd24b0b44239122438477f655aebf668, type: 3}
+    clip:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
     volume: 0.2
     pitch: 0
     loop: 1
     source: {fileID: 0}
   - name: Mining
-    clip: {fileID: 8300000, guid: c76744841322fc045985efb49ca8ede3, type: 3}
+    clip:
+    - {fileID: 8300000, guid: c76744841322fc045985efb49ca8ede3, type: 3}
     volume: 0.3
-    pitch: 0
-    loop: 1
+    pitch: 1
+    loop: 0
     source: {fileID: 0}
   - name: Rock_Destroy_1
-    clip: {fileID: 8300000, guid: d50ca9f0d09c60a4fba4285d60812603, type: 3}
+    clip:
+    - {fileID: 8300000, guid: d50ca9f0d09c60a4fba4285d60812603, type: 3}
+    - {fileID: 8300000, guid: d8fcf3bd2fc869b4db15beb64fa08c3e, type: 3}
     volume: 0.3
     pitch: 0
     loop: 0
     source: {fileID: 0}
   - name: Rock_Destroy_2
-    clip: {fileID: 8300000, guid: d8fcf3bd2fc869b4db15beb64fa08c3e, type: 3}
+    clip:
+    - {fileID: 8300000, guid: d8fcf3bd2fc869b4db15beb64fa08c3e, type: 3}
     volume: 0.3
     pitch: 0.1
     loop: 0
     source: {fileID: 0}
   - name: Rock_Throw
-    clip: {fileID: 8300000, guid: 90937f306e1cc404087c8b7d9c24705a, type: 3}
+    clip:
+    - {fileID: 8300000, guid: 90937f306e1cc404087c8b7d9c24705a, type: 3}
     volume: 0.3
     pitch: 0
     loop: 0
     source: {fileID: 0}
   - name: Grunt_1
-    clip: {fileID: 8300000, guid: 60194a88f1ebb8f49afa402e184bae97, type: 3}
+    clip:
+    - {fileID: 8300000, guid: 60194a88f1ebb8f49afa402e184bae97, type: 3}
+    - {fileID: 8300000, guid: 4dc08ad4b302a95439504a3202674a12, type: 3}
     volume: 0.4
     pitch: 0
     loop: 0
     source: {fileID: 0}
   - name: Grunt_2
-    clip: {fileID: 8300000, guid: 4dc08ad4b302a95439504a3202674a12, type: 3}
+    clip:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
     volume: 0
     pitch: 0
     loop: 0
     source: {fileID: 0}
   - name: Chest_Drop
-    clip: {fileID: 8300000, guid: 947a5b6b9a9342e408fa42bfbff16a8a, type: 3}
+    clip:
+    - {fileID: 8300000, guid: 947a5b6b9a9342e408fa42bfbff16a8a, type: 3}
     volume: 0.3
     pitch: 0
     loop: 0
     source: {fileID: 0}
   - name: Elevator_Ambience
-    clip: {fileID: 8300000, guid: 6946e369272f14a49b78228e2f0069e9, type: 3}
+    clip:
+    - {fileID: 8300000, guid: 6946e369272f14a49b78228e2f0069e9, type: 3}
     volume: 0.2
     pitch: 0
     loop: 1
     source: {fileID: 0}
   - name: Elevator_Open
-    clip: {fileID: 8300000, guid: 5671b3232dad2764abc32c0745c1dffd, type: 3}
+    clip:
+    - {fileID: 8300000, guid: 5671b3232dad2764abc32c0745c1dffd, type: 3}
     volume: 0.3
     pitch: 0
     loop: 0
     source: {fileID: 0}
   - name: Elevator_Ding
-    clip: {fileID: 8300000, guid: 442b9e4aaf3378b4a84cfe69984ef919, type: 3}
+    clip:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
     volume: 0.35
     pitch: 0
     loop: 0
     source: {fileID: 0}
   - name: Block_drop
-    clip: {fileID: 8300000, guid: b48435a797ba92c428b26e18c9950c35, type: 3}
+    clip:
+    - {fileID: 8300000, guid: b48435a797ba92c428b26e18c9950c35, type: 3}
     volume: 0.35
     pitch: 0
     loop: 0
     source: {fileID: 0}
   - name: Splat
-    clip: {fileID: 8300000, guid: 09d3176aad8840246bb2aedcb2d2e326, type: 3}
-    volume: 0.35
+    clip:
+    - {fileID: 8300000, guid: 09d3176aad8840246bb2aedcb2d2e326, type: 3}
+    volume: 0.206
     pitch: 0
     loop: 0
     source: {fileID: 0}

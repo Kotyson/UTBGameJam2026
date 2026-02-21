@@ -325,6 +325,7 @@ public class PlayerController : MonoBehaviour
 
     private void Die()
     {
+        AudioManager.Instance.Play("Splat");
         canMove = false;
         Vector3 newScale = new Vector3(1f, 0.1f, 1f);
         characterVisual.transform.localScale = newScale;

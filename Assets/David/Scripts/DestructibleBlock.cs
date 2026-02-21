@@ -42,7 +42,7 @@ public class DestructibleBlock : MonoBehaviour
     public void TakeDamage(float amount)
     {
         if (isDestroying) return;
-
+        AudioManager.Instance.Play("Mining");
         currentHealth -= amount;
     
         if (shakeRoutine != null) StopCoroutine(shakeRoutine);
@@ -63,6 +63,7 @@ public class DestructibleBlock : MonoBehaviour
 
     private IEnumerator ShrinkAndDestroy()
     {
+        AudioManager.Instance.Play("Rock_Destroy_1");
         // Disable collider so player/NPCs don't bump into a "ghost" block
         Collider col = GetComponentInChildren<Collider>();
         if (col != null) col.enabled = false;

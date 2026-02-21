@@ -177,6 +177,7 @@ public class GridManager : MonoBehaviour
 
         // 5. Land & Check for Player
         fallingBlock.transform.position = worldPos; // Snap to ground
+        AudioManager.Instance.Play("Block_drop");
         CheckForCrushedPlayer(worldPos);
 
         // 6. Finalize Logic
