@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2666814807379199667}
   m_Layer: 0
   m_Name: Player1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -120,7 +120,9 @@ MonoBehaviour:
   destructibleLayer:
     serializedVersion: 2
     m_Bits: 8
+  isDead: 0
   animator: {fileID: 3607404917785194010}
+  characterVisual: {fileID: 5121388440696200025}
 --- !u!1 &3141634165056097338
 GameObject:
   m_ObjectHideFlags: 0
