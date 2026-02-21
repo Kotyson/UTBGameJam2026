@@ -4453,10 +4453,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 339fe2646d3bae74ca3749c4872f62f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  speed: 8
+  controlType: 0
+  buildKey: 101
+  moveForce: 20
+  maxSpeed: 8
   rotationSpeed: 720
-  horizontalAxis: Horizontal2
-  verticalAxis: Vertical2
+  sphereRadius: 0.5
+  attackDistance: 2
+  attackDamage: 1
+  attackRate: 4
+  attackKey: 32
+  destructibleLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  animator: {fileID: 0}
 --- !u!4 &934806269 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5109626037418749872, guid: 922b94d8f55c6d34a98f7f2046fa36a8, type: 3}
@@ -6561,10 +6571,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 339fe2646d3bae74ca3749c4872f62f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  speed: 8
+  controlType: 0
+  buildKey: 101
+  moveForce: 20
+  maxSpeed: 8
   rotationSpeed: 720
-  horizontalAxis: Horizontal1
-  verticalAxis: Vertical1
+  sphereRadius: 0.5
+  attackDistance: 2
+  attackDamage: 1
+  attackRate: 4
+  attackKey: 32
+  destructibleLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  animator: {fileID: 0}
 --- !u!4 &1579839522 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5109626037418749872, guid: 922b94d8f55c6d34a98f7f2046fa36a8, type: 3}
