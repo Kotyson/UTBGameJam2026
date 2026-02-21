@@ -1,204 +1,227 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
+
 public class GridManager : MonoBehaviour
 {
-    [Header("Grid Settings")]
+    [Header("Settings")]
+    public LevelDataSO levelData;
     public float gridSize = 1f;
+    public float floorY = 0f;
+    
+    [Header("Editor Brush")]
+    public int selectedTypeIndex = 0;
 
-    [Tooltip("Array of 16 prefabs. Index corresponds to the bitmask value (0-15).")]
-    public GameObject[] tilePrefabs = new GameObject[16];
-    [System.Serializable]
-    public class LevelData
-    {
-        public List<Vector3Int> tilePositions = new List<Vector3Int>();
-    }
+    [Header("Gameplay Settings")]
+    public float caveRespawnTime = 3f;
 
-    // Dictionary stores the grid position and the current GameObject occupying it
-    private Dictionary<Vector3Int, GameObject> grid = new Dictionary<Vector3Int, GameObject>();
+    // Tracks the physical 3D models in the scene
+    private Dictionary<Vector3Int, GameObject> instances = new Dictionary<Vector3Int, GameObject>();
+    
+    // NEW: Tracks the ACTIVE logic state during gameplay (what is currently alive)
+    private Dictionary<Vector3Int, int> runtimeGrid = new Dictionary<Vector3Int, int>();
 
-    // The 4 neighbor directions (assuming a flat ground plane on X and Z)
+    [SerializeField] private bool debugSimulateMining = false;
+    
     private Vector3Int[] directions = new Vector3Int[]
     {
-        new Vector3Int(0, 0, 1),  // North (Value: 1)
-        new Vector3Int(1, 0, 0),  // East  (Value: 2)
-        new Vector3Int(0, 0, -1), // South (Value: 4)
-        new Vector3Int(-1, 0, 0)  // West  (Value: 8)
+        new Vector3Int(0, 0, 1),  // N
+        new Vector3Int(1, 0, 0),  // E
+        new Vector3Int(0, 0, -1), // S
+        new Vector3Int(-1, 0, 0)  // W
     };
+
+    private void Start()
+    {
+        if (levelData != null)
+        {
+            LoadLevelFromBlueprint();
+        }
+    }
+
+    private void LoadLevelFromBlueprint()
+    {
+        // 1. Clear everything
+        foreach (var go in instances.Values) Destroy(go);
+        instances.Clear();
+        runtimeGrid.Clear();
+
+        // 2. Copy the blueprint into our active Runtime State
+        foreach (var tile in levelData.placedTiles)
+        {
+            runtimeGrid.Add(tile.position, tile.typeIndex);
+        }
+
+        // 3. Spawn the visuals based on the Runtime State
+        foreach (var pos in runtimeGrid.Keys)
+        {
+            UpdateVisuals(pos);
+        }
+    }
 
     void Update()
     {
-    #if UNITY_EDITOR
-        if (!Application.isPlaying)
-            return;
-    #endif
+        if (levelData == null) return;
 
-        if (Input.GetMouseButtonDown(0))
+        // --- EDITOR MODE: Painting the Blueprint ---
+        if (!debugSimulateMining) 
         {
-            HandleMouseClick();
+            if (Input.GetMouseButtonDown(0)) HandleEditorClick(true);
+            if (Input.GetMouseButtonDown(1)) HandleEditorClick(false);
+        }
+        // --- GAMEPLAY MODE: Player interaction (Simulated) ---
+        else 
+        {
+            // Simulating a player attacking a block with left click
+            if (Input.GetMouseButtonDown(0)) SimulatePlayerBreakingBlock();
         }
     }
 
-    private void HandleMouseClick()
+    // ==========================================
+    // GAMEPLAY LOGIC (Destruction & Respawn)
+    // ==========================================
+
+    private void SimulatePlayerBreakingBlock()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        
-        if (Physics.Raycast(ray, out RaycastHit hit, 100f))
+        if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            if (hit.collider.CompareTag("Ground"))
+            Vector3Int gridPos = WorldToGrid(hit.collider.transform.position);
+            
+            // If the block exists in our runtime grid
+            if (runtimeGrid.TryGetValue(gridPos, out int typeIndex))
             {
-                Vector3Int gridPos = WorldToGrid(hit.point);
-                AddBlock(gridPos);
-            }
-            else
-            {
-                Vector3Int gridPos = WorldToGrid(hit.collider.transform.position);
-                RemoveBlock(gridPos);
-            }
-        }
-    }
-
-    private void AddBlock(Vector3Int gridPos)
-    {
-        if (grid.ContainsKey(gridPos)) return;
-
-        // Temporarily put null in the dictionary so neighbors know a block is here
-        grid.Add(gridPos, null); 
-        
-        // Calculate the correct shape and spawn it
-        Debug.Log("----------");
-        UpdateTile(gridPos);
-        Debug.Log("----------");
-        // Tell the 4 neighbors to update themselves
-        UpdateNeighbors(gridPos);
-    }
-
-    public void RemoveBlock(Vector3Int gridPos)
-    {
-        if (!grid.ContainsKey(gridPos)) return;
-
-        // Destroy the game object
-        Destroy(grid[gridPos]);
-        
-        // Remove from the dictionary so neighbors know it's gone
-        grid.Remove(gridPos);
-
-        // Tell the 4 neighbors to update themselves
-        UpdateNeighbors(gridPos);
-    }
-    public void TryAddBlock(Vector3Int gridPos)
-    {
-        if (grid.ContainsKey(gridPos))
-            return;
-
-        AddBlock(gridPos);
-    }
-
-    // --- The Bitmask Auto-Tiling Logic ---
-
-    private void UpdateNeighbors(Vector3Int gridPos)
-    {
-        foreach (Vector3Int dir in directions)
-        {
-            Vector3Int neighborPos = gridPos + dir;
-            if (grid.ContainsKey(neighborPos))
-            {
-                UpdateTile(neighborPos);
+                // Let's assume Type 0 is Cave (Destructible) and Type 1 is Boundary (Indestructible)
+                if (typeIndex == 0) 
+                {
+                    StartCoroutine(DestroyAndRespawnTile(gridPos, typeIndex));
+                }
+                else
+                {
+                    Debug.Log("Hit a boundary! Cannot destroy.");
+                }
             }
         }
     }
 
-    private void UpdateTile(Vector3Int gridPos)
+    private IEnumerator DestroyAndRespawnTile(Vector3Int pos, int typeIndex)
     {
-        // 1. Calculate the bitmask value based on neighbors
-        int maskValue = 0;
-        if (grid.ContainsKey(gridPos + directions[0])) maskValue += 1; // North
-        if (grid.ContainsKey(gridPos + directions[1])) maskValue += 2; // East
-        if (grid.ContainsKey(gridPos + directions[2])) maskValue += 4; // South
-        if (grid.ContainsKey(gridPos + directions[3])) maskValue += 8; // West
-
-        // 2. Destroy the old block if it exists
-        if (grid[gridPos] != null)
+        // 1. Remove from active runtime state
+        runtimeGrid.Remove(pos);
+        
+        // 2. Destroy the physical model
+        if (instances.ContainsKey(pos))
         {
-            Destroy(grid[gridPos]);
+            Destroy(instances[pos]);
+            instances.Remove(pos);
         }
 
-        // 3. Spawn the new block based on the mask value
-        Vector3 worldPos = GridToWorld(gridPos);
-        GameObject newBlock = Instantiate(tilePrefabs[maskValue], worldPos, tilePrefabs[maskValue].transform.rotation, this.transform);
-        DestructibleBlock destructible = newBlock.GetComponent<DestructibleBlock>();
-        if (destructible != null)
+        // 3. Tell neighbors to update their bitmasks (cave changes shape)
+        RefreshNeighbors(pos);
+
+        // 4. Wait for respawn timer
+        yield return new WaitForSeconds(caveRespawnTime);
+
+        // 5. Check if something is blocking the spawn (Optional, but good for gameplay)
+        // If a player is standing exactly here, you might want to wait! 
+
+        // 6. Respawn! Add back to runtime state
+        runtimeGrid.Add(pos, typeIndex);
+        UpdateVisuals(pos);
+        RefreshNeighbors(pos);
+    }
+
+
+    // ==========================================
+    // EDITOR LOGIC (Painting the Template)
+    // ==========================================
+
+    private void HandleEditorClick(bool isAdding)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Plane p = new Plane(Vector3.up, new Vector3(0, floorY, 0));
+
+        if (p.Raycast(ray, out float enter))
         {
-            destructible.Initialize(this, gridPos);
+            Vector3Int gridPos = WorldToGrid(ray.GetPoint(enter));
+
+            if (isAdding) AddTileToBlueprint(gridPos);
+            else RemoveTileFromBlueprint(gridPos);
         }
-        // 4. Save it back to the dictionary
-        Debug.Log("Position: " + maskValue);
-        grid[gridPos] = newBlock;
     }
 
-    // --- Helpers ---
-    public Vector3Int WorldToGrid(Vector3 worldPos)
+    private void AddTileToBlueprint(Vector3Int pos)
     {
-        return new Vector3Int(
-            Mathf.RoundToInt(worldPos.x / gridSize),
-            0,
-            Mathf.RoundToInt(worldPos.z / gridSize)
-        );
+        if (levelData.GetTypeAt(pos) != -1) return;
+
+        levelData.placedTiles.Add(new LevelDataSO.TileEntry { position = pos, typeIndex = selectedTypeIndex });
+        
+        // Temporarily add to runtime grid just so we can see it while editing
+        runtimeGrid[pos] = selectedTypeIndex; 
+        UpdateVisuals(pos);
+        RefreshNeighbors(pos);
     }
 
-    private Vector3 GridToWorld(Vector3Int gridPos)
+    private void RemoveTileFromBlueprint(Vector3Int pos)
     {
-        return new Vector3(gridPos.x * gridSize, gridPos.y * gridSize, gridPos.z * gridSize);
-    }
-    public void SaveLevel()
-    {
-        LevelData data = new LevelData();
+        int index = levelData.placedTiles.FindIndex(t => t.position == pos);
+        if (index == -1) return;
 
-        foreach (var kvp in grid)
+        levelData.placedTiles.RemoveAt(index);
+        runtimeGrid.Remove(pos);
+        
+        if (instances.ContainsKey(pos))
         {
-            data.tilePositions.Add(kvp.Key);
+            Destroy(instances[pos]);
+            instances.Remove(pos);
+        }
+        
+        RefreshNeighbors(pos);
+    }
+
+
+    // ==========================================
+    // VISUALS & BITMASKING (Reads from Runtime Grid)
+    // ==========================================
+
+    private void RefreshNeighbors(Vector3Int pos)
+    {
+        foreach (var dir in directions) UpdateVisuals(pos + dir);
+    }
+
+    private void UpdateVisuals(Vector3Int pos)
+    {
+        // Check if it exists in the ACTIVE game state, not the blueprint
+        if (!runtimeGrid.TryGetValue(pos, out int myType)) return; 
+
+        // Calculate Bitmask
+        int mask = 0;
+        if (GetRuntimeTypeAt(pos + directions[0]) == myType) mask += 1;
+        if (GetRuntimeTypeAt(pos + directions[1]) == myType) mask += 2;
+        if (GetRuntimeTypeAt(pos + directions[2]) == myType) mask += 4;
+        if (GetRuntimeTypeAt(pos + directions[3]) == myType) mask += 8;
+
+        if (instances.ContainsKey(pos))
+        {
+            Destroy(instances[pos]);
+            instances.Remove(pos);
         }
 
-        string json = JsonUtility.ToJson(data, true);
-        System.IO.File.WriteAllText(Application.persistentDataPath + "/level.json", json);
-
-        Debug.Log("Level Saved!");
+        GameObject prefab = levelData.availableTileSets[myType].prefabs[mask];
+        if (prefab != null)
+        {
+            GameObject go = Instantiate(prefab, GridToWorld(pos), prefab.transform.rotation, transform);
+            instances.Add(pos, go);
+        }
     }
-    public void LoadLevel()
-{
-    string path = Application.persistentDataPath + "/level.json";
 
-    if (!System.IO.File.Exists(path))
-        return;
-
-    string json = System.IO.File.ReadAllText(path);
-    LevelData data = JsonUtility.FromJson<LevelData>(json);
-
-    // Destroy old tiles
-    foreach (var obj in grid.Values)
+    // Helper for Bitmasking to check runtime state
+    private int GetRuntimeTypeAt(Vector3Int pos)
     {
-        if (obj != null)
-            Destroy(obj);
+        if (runtimeGrid.TryGetValue(pos, out int type)) return type;
+        return -1;
     }
 
-    grid.Clear();
-
-    //  PASS 1: Register all grid positions first
-    foreach (Vector3Int pos in data.tilePositions)
-    {
-        if (!grid.ContainsKey(pos))
-            grid.Add(pos, null);
-    }
-
-    //  PASS 2: Now update all tiles
-    foreach (Vector3Int pos in data.tilePositions)
-    {
-        UpdateTile(pos);
-    }
-
-    Debug.Log("Level Loaded Correctly!");
-}
+    private Vector3Int WorldToGrid(Vector3 v) => new Vector3Int(Mathf.RoundToInt(v.x / gridSize), 0, Mathf.RoundToInt(v.z / gridSize));
+    private Vector3 GridToWorld(Vector3Int v) => new Vector3(v.x * gridSize, floorY, v.z * gridSize);
 }
