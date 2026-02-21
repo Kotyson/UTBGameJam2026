@@ -104,6 +104,11 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    public void RemoveBlock(Vector3Int pos)
+    {
+        StartCoroutine(DestroyAndRespawnTile(pos, 0));
+    }
+
     private IEnumerator DestroyAndRespawnTile(Vector3Int pos, int typeIndex)
     {
         // 1. Remove from active runtime state
