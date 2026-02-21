@@ -25,6 +25,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float attackRate = 4f;
     [SerializeField] private KeyCode attackKey = KeyCode.Space;
     [SerializeField] private LayerMask destructibleLayer;
+    [SerializeField] private LayerMask playerLayer;
+    [SerializeField] private float knockbackForce = 12f;
 
     [Header("Item Settings")]
     [SerializeField] private KeyCode pickupThrowKey = KeyCode.E;
@@ -132,9 +134,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Volá Chest.cs pøes OnTriggerEnter/Exit
-    /// </summary>
     public void SetNearChest(Chest chest)
     {
         nearbyChest = chest;
@@ -144,6 +143,12 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log($"[Player] Hráè {controlType} stunnutý!");
         // TODO: implementace stunu (zablokovat input, pøehrát animaci, atd.)
+    }
+
+    public void ApplyKnockback(Vector3 direction, float force)
+    {
+        rb.linearVelocity = Vector3.zero;
+        rb.AddForce(direction * force, ForceMode.Impulse);
     }
 
     
@@ -203,7 +208,7 @@ public class PlayerController : MonoBehaviour
         rb.MoveRotation(newRotation);
     }
 
-   
+    
 
     private void TryAttack()
     {
@@ -215,21 +220,29 @@ public class PlayerController : MonoBehaviour
         Vector3 origin = transform.position + transform.forward * -0.25f;
         Vector3 direction = transform.forward;
 
+        // Tref bloky i hráèe jedním castem
         if (Physics.SphereCast(origin,
                                 sphereRadius,
                                 direction,
                                 out RaycastHit hit,
                                 attackDistance,
-                                destructibleLayer,
+                                destructibleLayer | playerLayer,
                                 QueryTriggerInteraction.Ignore))
         {
             DestructibleBlock block = hit.collider.GetComponent<DestructibleBlock>();
             if (block != null)
                 block.TakeDamage(attackDamage);
+
+            PlayerController otherPlayer = hit.collider.GetComponent<PlayerController>();
+            if (otherPlayer != null && otherPlayer != this)
+            {
+                Vector3 knockbackDir = new Vector3(direction.x, 0f, direction.z).normalized;
+                otherPlayer.ApplyKnockback(knockbackDir, knockbackForce);
+            }
         }
     }
 
-   
+    
 
     private void UpdateAnimator()
     {
