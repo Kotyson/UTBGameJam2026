@@ -541,7 +541,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f34b1102e6f10aa409a93aa128a43ad5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  levelData: {fileID: 11400000, guid: 7d80d7f2d3171624194146409b37c0ee, type: 2}
+  levelData: {fileID: 11400000, guid: 2d543fc89c3168c448d51f0f48c7eb76, type: 2}
   gridSize: 1
 --- !u!4 &1196533464
 Transform:
@@ -787,6 +787,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GridManager
       objectReference: {fileID: 0}
+    - target: {fileID: 7839601975329447148, guid: c3bdaa791ecaefd4e94bca342391f4cb, type: 3}
+      propertyPath: levelData
+      value: 
+      objectReference: {fileID: 11400000, guid: 2d543fc89c3168c448d51f0f48c7eb76, type: 2}
     - target: {fileID: 7839601975329447148, guid: c3bdaa791ecaefd4e94bca342391f4cb, type: 3}
       propertyPath: indicatorPrefab
       value: 
