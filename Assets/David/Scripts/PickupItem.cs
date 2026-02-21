@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections;
+using System.Runtime.CompilerServices;
 
 public class PickupItem : MonoBehaviour
 {
@@ -7,7 +9,9 @@ public class PickupItem : MonoBehaviour
 
     private Rigidbody rb;
     private Collider col;
+    private float DestroyAfterCollisionCooldown = 3f;
     private PlayerController thrownBy;
+    private bool canBePickedUp = true;
 
     public bool IsThrown { get; private set; } = false;
 
@@ -16,12 +20,13 @@ public class PickupItem : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         col = GetComponent<Collider>();
 
-        // Pøedmìt se nehıbe dokud leí na zemi
-        Freeze();
+        // Pï¿½edmï¿½t se nehï¿½be dokud leï¿½ï¿½ na zemi
+        //Freeze();
     }
 
     public void PickUp(Transform holdPoint)
     {
+        if (!canBePickedUp) return;
         IsThrown = false;
         thrownBy = null;
         Freeze();
@@ -29,6 +34,9 @@ public class PickupItem : MonoBehaviour
         transform.SetParent(holdPoint);
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
+        //Dont allow picking up if the item is in cooldown of destroying after collision
+
+        
     }
 
     public void Drop(Vector3 throwDirection, PlayerController thrower)
@@ -45,15 +53,23 @@ public class PickupItem : MonoBehaviour
     {
         if (!IsThrown) return;
 
-        // Ignoruj hráèe kterı hodil
+        // Ignoruj hrï¿½ï¿½e kterï¿½ hodil
         PlayerController player = collision.collider.GetComponent<PlayerController>();
         if (player != null && player == thrownBy) return;
 
-        // Trefil jiného hráèe – stun
+        // Trefil jinï¿½ho hrï¿½ï¿½e ï¿½ stun
         if (player != null)
             player.Stun();
+        
+        // Vï¿½dy zniï¿½it po dopadu (aï¿½ trefil kohokoliv nebo cokoliv)
+       // destroy after cooldown
+       StartCoroutine(DestroyAfterCooldown());
 
-        // Vdy znièit po dopadu (a trefil kohokoliv nebo cokoliv)
+    }
+    public IEnumerator DestroyAfterCooldown()
+    {
+        yield return new WaitForSeconds(DestroyAfterCollisionCooldown);
+        canBePickedUp = false;
         Destroy(gameObject);
     }
 
