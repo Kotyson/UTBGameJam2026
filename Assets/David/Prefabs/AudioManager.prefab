@@ -117,3 +117,9 @@ MonoBehaviour:
     pitch: 0
     loop: 0
     source: {fileID: 0}
+  - name: Block_drop
+    clip: {fileID: 8300000, guid: b48435a797ba92c428b26e18c9950c35, type: 3}
+    volume: 0.35
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
