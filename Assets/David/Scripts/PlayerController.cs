@@ -12,8 +12,6 @@ public class PlayerController : MonoBehaviour
     [Header("Control Settings")]
     public ControlType controlType;
     private Vector3 currentInputDirection;
-    [SerializeField] private KeyCode buildKey = KeyCode.E;
-    // [SerializeField] private GridManager gridManager;
 
     [Header("Movement Settings")]
     [SerializeField] private float moveForce = 20f;
@@ -28,38 +26,52 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private KeyCode attackKey = KeyCode.Space;
     [SerializeField] private LayerMask destructibleLayer;
 
-    [SerializeField] public Animator animator;
-    
-    private float nextAttackTime;
+    [Header("Item Settings")]
+    [SerializeField] private KeyCode pickupThrowKey = KeyCode.E;
+    [SerializeField] private Transform holdPoint;
+    [SerializeField] private float pickupRadius = 1.5f;
+    [SerializeField] private LayerMask itemLayer;
+    [SerializeField] private GameObject pickaxeVisual;
 
+    [SerializeField] public Animator animator;
+
+    private float nextAttackTime;
     private Rigidbody rb;
+    private PickupItem heldItem;
+    private Chest nearbyChest;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         if (animator == null)
-        animator = GetComponentInChildren<Animator>();
+            animator = GetComponentInChildren<Animator>();
     }
 
     private void Update()
     {
         currentInputDirection = GetInput();
 
-        if (Input.GetKey(attackKey))
+        // Attack ñ pouze pokud hr·Ë nem· p¯edmÏt v ruce
+        if (heldItem == null)
         {
-            animator.SetBool("Mining", true);
-            TryAttack();
+            if (Input.GetKey(attackKey))
+            {
+                animator.SetBool("Mining", true);
+                TryAttack();
+            }
+            else
+            {
+                animator.SetBool("Mining", false);
+            }
         }
         else
         {
             animator.SetBool("Mining", false);
         }
 
-        if (Input.GetKeyDown(buildKey))
-        {
-            // TryBuild();
-        }
+        HandleItemInput();
     }
+
     private void FixedUpdate()
     {
         Move(currentInputDirection);
@@ -67,6 +79,74 @@ public class PlayerController : MonoBehaviour
         RotateTowardsInput();
         UpdateAnimator();
     }
+
+    
+
+    private void HandleItemInput()
+    {
+        if (!Input.GetKeyDown(pickupThrowKey)) return;
+
+        if (heldItem != null)
+        {
+            if (nearbyChest != null)
+            {
+                // Dej p¯edmÏt do chestky
+                nearbyChest.DepositItem(heldItem);
+                heldItem = null;
+            }
+            else
+            {
+                // HoÔ p¯edmÏt p¯ed sebe
+                Vector3 throwDir = new Vector3(transform.forward.x, 0f, transform.forward.z).normalized;
+                heldItem.Drop(throwDir, this);
+                heldItem = null;
+            }
+
+            // Vraù krump·Ë
+            if (pickaxeVisual != null)
+                pickaxeVisual.SetActive(true);
+        }
+        else
+        {
+            // Pokus o sebr·nÌ nejbliûöÌho p¯edmÏtu
+            Collider[] hits = Physics.OverlapSphere(transform.position, pickupRadius, itemLayer);
+            if (hits.Length == 0) return;
+
+            Collider nearest = hits[0];
+            float minDist = float.MaxValue;
+            foreach (var h in hits)
+            {
+                float d = Vector3.Distance(transform.position, h.transform.position);
+                if (d < minDist) { minDist = d; nearest = h; }
+            }
+
+            PickupItem item = nearest.GetComponent<PickupItem>();
+            if (item == null) return;
+
+            heldItem = item;
+            heldItem.PickUp(holdPoint);
+
+            // Skryj krump·Ë
+            if (pickaxeVisual != null)
+                pickaxeVisual.SetActive(false);
+        }
+    }
+
+    /// <summary>
+    /// Vol· Chest.cs p¯es OnTriggerEnter/Exit
+    /// </summary>
+    public void SetNearChest(Chest chest)
+    {
+        nearbyChest = chest;
+    }
+
+    public void Stun()
+    {
+        Debug.Log($"[Player] Hr·Ë {controlType} stunnut˝!");
+        // TODO: implementace stunu (zablokovat input, p¯ehr·t animaci, atd.)
+    }
+
+    
 
     private Vector3 GetInput()
     {
@@ -88,8 +168,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKey(KeyCode.DownArrow)) vertical = -1f;
         }
 
-        Vector3 direction = new Vector3(horizontal, 0f, vertical);
-        return direction.normalized;
+        return new Vector3(horizontal, 0f, vertical).normalized;
     }
 
     private void Move(Vector3 direction)
@@ -107,6 +186,7 @@ public class PlayerController : MonoBehaviour
             rb.linearVelocity = new Vector3(limitedVelocity.x, rb.linearVelocity.y, limitedVelocity.z);
         }
     }
+
     private void RotateTowardsInput()
     {
         if (currentInputDirection.sqrMagnitude < 0.01f)
@@ -122,6 +202,9 @@ public class PlayerController : MonoBehaviour
 
         rb.MoveRotation(newRotation);
     }
+
+   
+
     private void TryAttack()
     {
         if (Time.time < nextAttackTime)
@@ -133,61 +216,46 @@ public class PlayerController : MonoBehaviour
         Vector3 direction = transform.forward;
 
         if (Physics.SphereCast(origin,
-                            sphereRadius,
-                            direction,
-                            out RaycastHit hit,
-                            attackDistance,
-                            destructibleLayer,
-                            QueryTriggerInteraction.Ignore))
+                                sphereRadius,
+                                direction,
+                                out RaycastHit hit,
+                                attackDistance,
+                                destructibleLayer,
+                                QueryTriggerInteraction.Ignore))
         {
             DestructibleBlock block = hit.collider.GetComponent<DestructibleBlock>();
-
             if (block != null)
-            {
                 block.TakeDamage(attackDamage);
-            }
         }
     }
-    // private void TryBuild()
-    // {
-    //     if (gridManager == null)
-    //         return;
 
-    //     // Always build exactly one grid cell in front
-    //     float buildDistance = gridManager.gridSize;
+   
 
-    //     Vector3 buildWorldPos = transform.position + transform.forward * buildDistance;
-
-    //     // Convert world position to grid position using GridManager
-    //     Vector3Int gridPos = gridManager.WorldToGrid(buildWorldPos);
-
-    //     // Prevent building inside player's current grid cell
-    //     Vector3Int playerGridPos = gridManager.WorldToGrid(transform.position);
-    //     if (gridPos == playerGridPos)
-    //         return;
-
-    //     gridManager.TryAddBlock(gridPos);
-    // }
     private void UpdateAnimator()
     {
-        if (animator == null)
-            return; 
+        if (animator == null) return;
 
         Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
         float speed = horizontalVelocity.magnitude;
 
         animator.SetFloat("Speed", speed, 0.1f, Time.fixedDeltaTime);
     }
+
+    
+
     private void OnDrawGizmosSelected()
     {
+        // Attack range
         Gizmos.color = Color.red;
-
         Vector3 origin = transform.position + transform.forward * -0.25f;
         Vector3 end = origin + transform.forward * attackDistance;
-
         Gizmos.DrawWireSphere(origin, sphereRadius);
         Gizmos.DrawWireSphere(end, sphereRadius);
         Gizmos.DrawLine(origin + Vector3.right * sphereRadius, end + Vector3.right * sphereRadius);
         Gizmos.DrawLine(origin - Vector3.right * sphereRadius, end - Vector3.right * sphereRadius);
+
+        // Pickup radius
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, pickupRadius);
     }
 }

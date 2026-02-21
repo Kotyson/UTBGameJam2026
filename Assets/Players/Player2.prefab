@@ -162,6 +162,7 @@ Transform:
   m_Children:
   - {fileID: 7647162845143874923}
   - {fileID: 6192859088535576263}
+  - {fileID: 250851125568471669}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8388191102688146725
@@ -235,7 +236,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   controlType: 1
-  buildKey: 257
   moveForce: 125
   maxSpeed: 8
   rotationSpeed: 10
@@ -247,7 +247,45 @@ MonoBehaviour:
   destructibleLayer:
     serializedVersion: 2
     m_Bits: 8
+  pickupThrowKey: 101
+  holdPoint: {fileID: 250851125568471669}
+  pickupRadius: 0.5
+  itemLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  pickaxeVisual: {fileID: 8759841431520297879}
   animator: {fileID: 4215431140763522975}
+--- !u!1 &5780875818164943763
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 250851125568471669}
+  m_Layer: 0
+  m_Name: HandPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &250851125568471669
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5780875818164943763}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.442, y: -0.613, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2065507889205719513}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &5943570610537576748
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -360,3 +398,8 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &8759841431520297879 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -6058756965078697285, guid: 3f89d0de7dbc0b442889189a68a387ee, type: 3}
+  m_PrefabInstance: {fileID: 5943570610537576748}
+  m_PrefabAsset: {fileID: 0}
