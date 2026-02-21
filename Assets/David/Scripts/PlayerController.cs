@@ -1,3 +1,4 @@
+using System.Runtime.Serialization;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -17,6 +18,18 @@ public class SimpleTopDownController : MonoBehaviour
     [SerializeField] private float maxSpeed = 8f;
     [SerializeField] private float rotationSpeed = 15f;
 
+    [Header("Attack Settings")]
+    [SerializeField] private float sphereRadius = 0.5f;
+    [SerializeField] private float attackDistance = 2f;
+    [SerializeField] private float attackDamage = 1f;
+    [SerializeField] private float attackRate = 4f;
+    [SerializeField] private KeyCode attackKey = KeyCode.Space;
+    [SerializeField] private LayerMask destructibleLayer;
+
+    private float nextAttackTime;
+    private Vector3 currentInputDirection;
+
+
     private Rigidbody rb;
 
     private void Awake()
@@ -27,9 +40,18 @@ public class SimpleTopDownController : MonoBehaviour
     private void FixedUpdate()
     {
         Vector3 inputDirection = GetInput();
+        currentInputDirection = inputDirection;
+
         Move(inputDirection);
         ClampVelocity();
-        RotateTowardsMovement();
+        RotateTowardsInput(); // changed
+    }
+        private void Update()
+    {
+        if (Input.GetKey(attackKey))
+        {
+            TryAttack();    
+        }
     }
 
     private Vector3 GetInput()
@@ -71,15 +93,12 @@ public class SimpleTopDownController : MonoBehaviour
             rb.linearVelocity = new Vector3(limitedVelocity.x, rb.linearVelocity.y, limitedVelocity.z);
         }
     }
-    private void RotateTowardsMovement()
+    private void RotateTowardsInput()
     {
-        Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-
-        // Don't rotate if barely moving
-        if (horizontalVelocity.sqrMagnitude < 0.01f)
+        if (currentInputDirection.sqrMagnitude < 0.01f)
             return;
 
-        Quaternion targetRotation = Quaternion.LookRotation(horizontalVelocity.normalized, Vector3.up);
+        Quaternion targetRotation = Quaternion.LookRotation(currentInputDirection, Vector3.up);
 
         Quaternion newRotation = Quaternion.Slerp(
             rb.rotation,
@@ -88,5 +107,43 @@ public class SimpleTopDownController : MonoBehaviour
         );
 
         rb.MoveRotation(newRotation);
+    }
+    private void TryAttack()
+    {
+        if (Time.time < nextAttackTime)
+            return;
+
+        nextAttackTime = Time.time + 1f / attackRate;
+
+        Vector3 origin = transform.position + transform.forward * -0.1f;
+        Vector3 direction = transform.forward;
+
+        if (Physics.SphereCast(origin,
+                            sphereRadius,
+                            direction,
+                            out RaycastHit hit,
+                            attackDistance,
+                            destructibleLayer,
+                            QueryTriggerInteraction.Ignore))
+        {
+            DestructibleBlock block = hit.collider.GetComponent<DestructibleBlock>();
+
+            if (block != null)
+            {
+                block.TakeDamage(attackDamage);
+            }
+        }
+    }
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+
+        Vector3 origin = transform.position + transform.forward * -0.1f;
+        Vector3 end = origin + transform.forward * attackDistance;
+
+        Gizmos.DrawWireSphere(origin, sphereRadius);
+        Gizmos.DrawWireSphere(end, sphereRadius);
+        Gizmos.DrawLine(origin + Vector3.right * sphereRadius, end + Vector3.right * sphereRadius);
+        Gizmos.DrawLine(origin - Vector3.right * sphereRadius, end - Vector3.right * sphereRadius);
     }
 }

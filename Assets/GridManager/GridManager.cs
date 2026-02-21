@@ -1,12 +1,22 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 public class GridManager : MonoBehaviour
-{
+{   
+    [System.Serializable]
+    public class LevelData
+    {
+        public List<Vector3Int> tilePositions = new List<Vector3Int>();
+    }
     [Header("Grid Settings")]
     public float gridSize = 1f;
-
+    // there should be a description of how to work with ground
+    // is there a way to have it written in the inspector all the time? 
+    [Header("The ground plane must have a collider and be tagged 'Ground'")]
+    
     [Tooltip("Array of 16 prefabs. Index corresponds to the bitmask value (0-15).")]
     public GameObject[] tilePrefabs = new GameObject[16];
 
@@ -24,6 +34,11 @@ public class GridManager : MonoBehaviour
 
     void Update()
     {
+    #if UNITY_EDITOR
+        if (!Application.isPlaying)
+            return;
+    #endif
+
         if (Input.GetMouseButtonDown(0))
         {
             HandleMouseClick();
@@ -34,20 +49,17 @@ public class GridManager : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         
-        if (Physics.Raycast(ray, out RaycastHit hit))
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f))
         {
-            // Remove block if we hit one
-            Vector3Int gridPos = WorldToGrid(hit.collider.transform.position);
-            RemoveBlock(gridPos);
-        }
-        else
-        {
-            // Add block on the ground plane
-            Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
-            if (groundPlane.Raycast(ray, out float enter))
+            if (hit.collider.CompareTag("Ground"))
             {
-                Vector3Int gridPos = WorldToGrid(ray.GetPoint(enter));
+                Vector3Int gridPos = WorldToGrid(hit.point);
                 AddBlock(gridPos);
+            }
+            else
+            {
+                Vector3Int gridPos = WorldToGrid(hit.collider.transform.position);
+                RemoveBlock(gridPos);
             }
         }
     }
@@ -67,7 +79,7 @@ public class GridManager : MonoBehaviour
         UpdateNeighbors(gridPos);
     }
 
-    private void RemoveBlock(Vector3Int gridPos)
+    public void RemoveBlock(Vector3Int gridPos)
     {
         if (!grid.ContainsKey(gridPos)) return;
 
@@ -113,12 +125,31 @@ public class GridManager : MonoBehaviour
         // 3. Spawn the new block based on the mask value
         Vector3 worldPos = GridToWorld(gridPos);
         GameObject newBlock = Instantiate(tilePrefabs[maskValue], worldPos, tilePrefabs[maskValue].transform.rotation, this.transform);
-        
+        DestructibleBlock destructible = newBlock.GetComponent<DestructibleBlock>();
+        if (destructible != null)
+        {
+            destructible.Initialize(this, gridPos);
+        }
         // 4. Save it back to the dictionary
         Debug.Log("Position: " + maskValue);
         grid[gridPos] = newBlock;
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.gray;
+
+        int size = 20;
+
+        for (int x = -size; x <= size; x++)
+        {
+            for (int z = -size; z <= size; z++)
+            {
+                Vector3 pos = new Vector3(x * gridSize, 0, z * gridSize);
+                Gizmos.DrawWireCube(pos, new Vector3(gridSize, 0.01f, gridSize));
+            }
+        }
+    }
     // --- Helpers ---
     private Vector3Int WorldToGrid(Vector3 worldPos)
     {
@@ -133,4 +164,56 @@ public class GridManager : MonoBehaviour
     {
         return new Vector3(gridPos.x * gridSize, gridPos.y * gridSize, gridPos.z * gridSize);
     }
+
+    #region Level Saving/Loading (Optional)
+    public void SaveLevel()
+    {
+        LevelData data = new LevelData();
+
+        foreach (var kvp in grid)
+        {
+            data.tilePositions.Add(kvp.Key);
+        }
+
+        string json = JsonUtility.ToJson(data, true);
+        System.IO.File.WriteAllText(Application.persistentDataPath + "/level.json", json);
+
+        Debug.Log("Level Saved!");
+    }
+    public void LoadLevel()
+    {
+        string path = Application.persistentDataPath + "/level.json";
+
+        if (!System.IO.File.Exists(path))
+            return;
+
+        string json = System.IO.File.ReadAllText(path);
+        LevelData data = JsonUtility.FromJson<LevelData>(json);
+
+        // Destroy old tiles
+        foreach (var obj in grid.Values)
+        {
+            if (obj != null)
+                Destroy(obj);
+        }
+
+        grid.Clear();
+
+        // ✅ PASS 1: Register all grid positions first
+        foreach (Vector3Int pos in data.tilePositions)
+        {
+            if (!grid.ContainsKey(pos))
+                grid.Add(pos, null);
+        }
+
+        // ✅ PASS 2: Now update all tiles
+        foreach (Vector3Int pos in data.tilePositions)
+        {
+            UpdateTile(pos);
+        }
+
+        Debug.Log("Level Loaded Correctly!");
+    }
+        
+    #endregion
 }

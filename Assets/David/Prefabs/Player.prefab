@@ -158,9 +158,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   controlType: 1
-  moveForce: 200
+  moveForce: 125
   maxSpeed: 8
   rotationSpeed: 720
+  sphereRadius: 0.5
+  attackDistance: 2
+  attackDamage: 1
+  attackRate: 4
+  attackKey: 32
+  destructibleLayer:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!1 &2317172058600917139
 GameObject:
   m_ObjectHideFlags: 0
@@ -299,7 +307,6 @@ GameObject:
   - component: {fileID: 941831820085052879}
   - component: {fileID: 6766021978805855815}
   - component: {fileID: 5819330777526581096}
-  - component: {fileID: 6918853726667399639}
   m_Layer: 0
   m_Name: face
   m_TagString: Untagged
@@ -316,7 +323,7 @@ Transform:
   m_GameObject: {fileID: 9086068097886091359}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.526}
+  m_LocalPosition: {x: 0, y: 0.46, z: 0.526}
   m_LocalScale: {x: 0.25, y: 0.25, z: 1.06}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -379,24 +386,3 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &6918853726667399639
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9086068097886091359}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}

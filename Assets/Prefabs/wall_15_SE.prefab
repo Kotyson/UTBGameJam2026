@@ -48,9 +48,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 588aa226fd7e3634f8366c5261f11847, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 78b86aedd8359a04797de72abfbaf7f8, type: 2}
     - target: {fileID: 919132149155446097, guid: 588aa226fd7e3634f8366c5261f11847, type: 3}
       propertyPath: m_Name
       value: wall_15_SE
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 588aa226fd7e3634f8366c5261f11847, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 588aa226fd7e3634f8366c5261f11847, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -63,6 +71,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 588aa226fd7e3634f8366c5261f11847, type: 3}
       insertIndex: -1
       addedObject: {fileID: 718060814726970819}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 588aa226fd7e3634f8366c5261f11847, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3722076361595834221}
   m_SourcePrefab: {fileID: 100100000, guid: 588aa226fd7e3634f8366c5261f11847, type: 3}
 --- !u!1 &9056161595805964611 stripped
 GameObject:
@@ -88,5 +99,23 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1, y: 2.11, z: 1}
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!114 &3722076361595834221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9056161595805964611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a40667948827f2d41b13742f7d8f60ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DestructibleBlock
+  blockData: {fileID: 11400000, guid: fba86e1e3221d8140a40d7a91fc498fa, type: 2}
+  fullHealthHeight: 0
+  zeroHealthHeight: -1
+  shakeAmount: 0.05
+  shakeDuration: 0.1
+  sinkSmoothSpeed: 8
