@@ -1,57 +1,92 @@
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+[RequireComponent(typeof(Rigidbody))]
+public class SimpleTopDownController : MonoBehaviour
 {
-    public float speed = 10f;
-    public float rotationSpeed = 720f;
-    public string horizontalAxis = "Horizontal1";
-    public string verticalAxis = "Vertical1";
-
-    private Camera mainCamera;
-    private float margin = 0.03f; // 3% rezerva od okraje obrazovky
-
-    void Start()
+    public enum ControlType
     {
-        mainCamera = Camera.main;
+        WASD,
+        ArrowKeys
     }
 
-    void Update()
+    [Header("Control Settings")]
+    public ControlType controlType;
+
+    [Header("Movement Settings")]
+    [SerializeField] private float moveForce = 20f;
+    [SerializeField] private float maxSpeed = 8f;
+    [SerializeField] private float rotationSpeed = 15f;
+
+    private Rigidbody rb;
+
+    private void Awake()
     {
-        float moveX = Input.GetAxisRaw(horizontalAxis);
-        float moveZ = Input.GetAxisRaw(verticalAxis);
-        Vector3 moveInput = new Vector3(moveX, 0, moveZ).normalized;
+        rb = GetComponent<Rigidbody>();
+    }
 
-        // 1. Pohyb
-        if (moveInput.magnitude >= 0.1f)
+    private void FixedUpdate()
+    {
+        Vector3 inputDirection = GetInput();
+        Move(inputDirection);
+        ClampVelocity();
+        RotateTowardsMovement();
+    }
+
+    private Vector3 GetInput()
+    {
+        float horizontal = 0f;
+        float vertical = 0f;
+
+        if (controlType == ControlType.WASD)
         {
-            // Otoèení
-            Quaternion targetRot = Quaternion.LookRotation(moveInput);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, rotationSpeed * Time.deltaTime);
-
-            // Samotný pohyb
-            transform.position += moveInput * speed * Time.deltaTime;
+            if (Input.GetKey(KeyCode.A)) horizontal = -1f;
+            if (Input.GetKey(KeyCode.D)) horizontal = 1f;
+            if (Input.GetKey(KeyCode.W)) vertical = 1f;
+            if (Input.GetKey(KeyCode.S)) vertical = -1f;
+        }
+        else if (controlType == ControlType.ArrowKeys)
+        {
+            if (Input.GetKey(KeyCode.LeftArrow)) horizontal = -1f;
+            if (Input.GetKey(KeyCode.RightArrow)) horizontal = 1f;
+            if (Input.GetKey(KeyCode.UpArrow)) vertical = 1f;
+            if (Input.GetKey(KeyCode.DownArrow)) vertical = -1f;
         }
 
-        // 2. TVRDÝ STOP (Hranice kamery)
-        // Pøevedeme pozici hráèe do "Viewportu" (0 = vlevo/dole, 1 = vpravo/nahoøe)
-        Vector3 viewPos = mainCamera.WorldToViewportPoint(transform.position);
+        Vector3 direction = new Vector3(horizontal, 0f, vertical);
+        return direction.normalized;
+    }
 
-        // Pokud vyboèíme, vrátíme se na hranici
-        bool clamped = false;
-        if (viewPos.x < margin) { viewPos.x = margin; clamped = true; }
-        if (viewPos.x > 1 - margin) { viewPos.x = 1 - margin; clamped = true; }
-        if (viewPos.y < margin) { viewPos.y = margin; clamped = true; }
-        if (viewPos.y > 1 - margin) { viewPos.y = 1 - margin; clamped = true; }
+    private void Move(Vector3 direction)
+    {
+        rb.AddForce(direction * moveForce, ForceMode.Force);
+    }
 
-        if (clamped)
+    private void ClampVelocity()
+    {
+        Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+
+        if (horizontalVelocity.magnitude > maxSpeed)
         {
-            // Pokud jsme byli mimo, vypoèítáme novou pozici ve svìtì
-            // Výška (Z ve Viewportu) musí zùstat stejná, aby postava "neuskakovala" nahoru
-            float distanceToCam = viewPos.z;
-            Vector3 worldPos = mainCamera.ViewportToWorldPoint(viewPos);
-
-            // Zachováme Y pozici hráèe (aby nezaèal levitovat)
-            transform.position = new Vector3(worldPos.x, transform.position.y, worldPos.z);
+            Vector3 limitedVelocity = horizontalVelocity.normalized * maxSpeed;
+            rb.linearVelocity = new Vector3(limitedVelocity.x, rb.linearVelocity.y, limitedVelocity.z);
         }
+    }
+    private void RotateTowardsMovement()
+    {
+        Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+
+        // Don't rotate if barely moving
+        if (horizontalVelocity.sqrMagnitude < 0.01f)
+            return;
+
+        Quaternion targetRotation = Quaternion.LookRotation(horizontalVelocity.normalized, Vector3.up);
+
+        Quaternion newRotation = Quaternion.Slerp(
+            rb.rotation,
+            targetRotation,
+            rotationSpeed * Time.fixedDeltaTime
+        );
+
+        rb.MoveRotation(newRotation);
     }
 }

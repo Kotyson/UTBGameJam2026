@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: hlina_placeholder
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 13c8890070b55c14594a942262f58463, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
