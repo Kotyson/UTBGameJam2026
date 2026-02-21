@@ -1,5 +1,6 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
+
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
@@ -51,10 +52,10 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        currentInputDirection = GetInput();
+        currentInputDirection = isStunned ? Vector3.zero : GetInput();
 
-        // Attack � pouze pokud hr�� nem� p�edm�t v ruce
-        if (heldItem == null)
+        // Attack – pouze pokud hráč nemá předmět v ruce a není stunnutý
+        if (!isStunned && heldItem == null)
         {
             if (Input.GetKey(attackKey))
             {
@@ -71,7 +72,7 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("Mining", false);
         }
 
-        HandleItemInput();
+        if (!isStunned) HandleItemInput();
     }
 
     private void FixedUpdate()
@@ -92,25 +93,25 @@ public class PlayerController : MonoBehaviour
         {
             if (nearbyChest != null)
             {
-                // Dej p�edm�t do chestky
+                // Dej předmět do chestky
                 nearbyChest.DepositItem(heldItem);
                 heldItem = null;
             }
             else
             {
-                // Ho� p�edm�t p�ed sebe
+                // Hoď předmět před sebe
                 Vector3 throwDir = new Vector3(transform.forward.x, 0f, transform.forward.z).normalized;
                 heldItem.Drop(throwDir, this);
                 heldItem = null;
             }
 
-            // Vra� krump��
+            // Vrať krumpáč
             if (pickaxeVisual != null)
                 pickaxeVisual.SetActive(true);
         }
         else
         {
-            // Pokus o sebr�n� nejbli���ho p�edm�tu
+            // Pokus o sebrání nejbližšího předmětu
             Collider[] hits = Physics.OverlapSphere(transform.position, pickupRadius, itemLayer);
             if (hits.Length == 0) return;
 
@@ -128,7 +129,7 @@ public class PlayerController : MonoBehaviour
             heldItem = item;
             heldItem.PickUp(holdPoint);
 
-            // Skryj krump��
+            // Skryj krumpáč
             if (pickaxeVisual != null)
                 pickaxeVisual.SetActive(false);
         }
@@ -139,27 +140,31 @@ public class PlayerController : MonoBehaviour
         nearbyChest = chest;
     }
 
+    private bool isStunned = false;
+
     public void Stun()
     {
-        Debug.Log($"[Player] Hr�� {controlType} stunnut�!");
-        // TODO: implementace stunu (zablokovat input, p�ehr�t animaci, atd.)
+        Debug.Log($"[Player] Hráč {controlType} stunnutý!");
         animator.SetBool("Stun", true);
-        // rotate the player against the direction of the movement of the rigidbody
-            Vector3 velocity = rb.linearVelocity; 
-            if (velocity.magnitude > 0.1f)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(-velocity.normalized, Vector3.up);
-                rb.rotation = targetRotation;
-            }
-        
 
-        
-        // here there should be some corrutine to set stun false
+        Vector3 velocity = rb.linearVelocity;
+        if (velocity.magnitude > 0.1f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(-velocity.normalized, Vector3.up);
+            rb.rotation = targetRotation;
+        }
+
+        if (isStunned)
+            StopCoroutine(ResetStun());
+
         StartCoroutine(ResetStun());
     }
-    public IEnumerator ResetStun()
+
+    private IEnumerator ResetStun()
     {
+        isStunned = true;
         yield return new WaitForSeconds(1.5f);
+        isStunned = false;
         animator.SetBool("Stun", false);
     }
 
@@ -168,7 +173,6 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = Vector3.zero;
         rb.AddForce(direction * force, ForceMode.Impulse);
     }
-
 
     
 
@@ -239,7 +243,7 @@ public class PlayerController : MonoBehaviour
         Vector3 origin = transform.position + transform.forward * -0.25f;
         Vector3 direction = transform.forward;
 
-        // Tref bloky i hr��e jedn�m castem
+        // Tref bloky i hráče jedním castem
         if (Physics.SphereCast(origin,
                                 sphereRadius,
                                 direction,
@@ -261,7 +265,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    
+   
 
     private void UpdateAnimator()
     {
