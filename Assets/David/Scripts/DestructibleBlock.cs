@@ -76,6 +76,8 @@ public class DestructibleBlock : MonoBehaviour
             yield return null;
         }
 
+        // drop items, money !!!!!!!!!!!
+        
         // 3. Finally, tell GridManager to destroy the object and start the respawn timer
         gridManager.FinishDestruction(gridPosition);
     }
