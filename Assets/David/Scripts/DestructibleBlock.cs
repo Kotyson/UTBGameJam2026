@@ -42,7 +42,7 @@ public class DestructibleBlock : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            gridManager.RemoveBlock(gridPosition);
+            // gridManager.RemoveBlock(gridPosition);
         }
     }
 

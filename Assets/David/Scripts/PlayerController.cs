@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(buildKey))
         {
-            TryBuild();
+            // TryBuild();
         }
     }
     private void FixedUpdate()
