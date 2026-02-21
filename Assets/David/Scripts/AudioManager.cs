@@ -55,7 +55,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    // Metoda, kterou bude volat tv�j kamar�d
+    
     public void Play(string name)
     {
         // Najde zvuk podle zadan�ho jm�na

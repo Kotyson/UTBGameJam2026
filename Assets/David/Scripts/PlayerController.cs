@@ -15,13 +15,18 @@ public class PlayerController : MonoBehaviour
     [Header("Control Settings")] public ControlType controlType;
     private Vector3 currentInputDirection;
 
-    [Header("Movement Settings")] [SerializeField]
+    [Header("Movement Settings")]
+    [SerializeField]
     private float moveForce = 20f;
 
     [SerializeField] private float maxSpeed = 8f;
     [SerializeField] private float rotationSpeed = 15f;
 
-    [Header("Attack Settings")] [SerializeField]
+    [SerializeField] private float footstepDelay = 0.5f;
+    private float footstepTimer;
+
+    [Header("Attack Settings")]
+    [SerializeField]
     private float sphereRadius = 0.5f;
 
     [SerializeField] private float attackDistance = 2f;
@@ -39,7 +44,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask itemLayer;
     [SerializeField] private GameObject pickaxeVisual;
 
-    [Header("Status")] [SerializeField] private bool isDead = false;
+    [Header("Status")][SerializeField] private bool isDead = false;
 
     [SerializeField] public Animator animator;
     [SerializeField] private Transform characterVisual;
@@ -47,7 +52,7 @@ public class PlayerController : MonoBehaviour
     private Renderer playerRenderer;
     private Color originalColor;
     public Transform spawnPoint;
-    
+
 
     private float nextAttackTime;
     private Rigidbody rb;
@@ -70,12 +75,10 @@ public class PlayerController : MonoBehaviour
         if (!canMove) return;
         currentInputDirection = GetInput();
 
-        // Attack – pouze pokud hráč nemá předmět v ruce a není stunnutý
         if (!isStunned && heldItem == null)
         {
             if (Input.GetKey(attackKey))
             {
-                animator.SetBool("Mining", true);
                 TryAttack();
             }
             else
@@ -89,6 +92,8 @@ public class PlayerController : MonoBehaviour
         }
 
         if (!isStunned) HandleItemInput();
+
+        HandleFootsteps();
     }
 
     private void FixedUpdate()
@@ -99,7 +104,24 @@ public class PlayerController : MonoBehaviour
         UpdateAnimator();
     }
 
-    
+    private void HandleFootsteps()
+    {
+        bool isMoving = currentInputDirection.sqrMagnitude > 0.01f && rb.linearVelocity.magnitude > 0.5f;
+
+        if (isMoving && !isDead && !isStunned)
+        {
+            footstepTimer -= Time.deltaTime;
+            if (footstepTimer <= 0)
+            {
+                // AudioManager.Instance.Play("Steps_1");
+                footstepTimer = footstepDelay;
+            }
+        }
+        else
+        {
+            footstepTimer = 0;
+        }
+    }
 
     private void HandleItemInput()
     {
@@ -109,25 +131,22 @@ public class PlayerController : MonoBehaviour
         {
             if (nearbyChest != null)
             {
-                // Dej předmět do chestky
                 nearbyChest.DepositItem(heldItem);
                 heldItem = null;
             }
             else
             {
-                // Hoď předmět před sebe
+                AudioManager.Instance.Play("Rock_Throw");
                 Vector3 throwDir = new Vector3(transform.forward.x, 0f, transform.forward.z).normalized;
                 heldItem.Drop(throwDir, this);
                 heldItem = null;
             }
 
-            // Vrať krumpáč
             if (pickaxeVisual != null)
                 pickaxeVisual.SetActive(true);
         }
         else
         {
-            // Pokus o sebrání nejbližšího předmětu
             Collider[] hits = Physics.OverlapSphere(transform.position, pickupRadius, itemLayer);
             if (hits.Length == 0) return;
 
@@ -145,7 +164,6 @@ public class PlayerController : MonoBehaviour
             heldItem = item;
             heldItem.PickUp(holdPoint);
 
-            // Skryj krumpáč
             if (pickaxeVisual != null)
                 pickaxeVisual.SetActive(false);
         }
@@ -160,7 +178,7 @@ public class PlayerController : MonoBehaviour
 
     public void Stun()
     {
-        Debug.Log($"[Player] Hráč {controlType} stunnutý!");
+        AudioManager.Instance.Play("Grunt_1");
         animator.SetBool("Stun", true);
 
         Vector3 velocity = rb.linearVelocity;
@@ -189,8 +207,6 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = Vector3.zero;
         rb.AddForce(direction * force, ForceMode.Impulse);
     }
-
-    
 
     private Vector3 GetInput()
     {
@@ -237,34 +253,25 @@ public class PlayerController : MonoBehaviour
             return;
 
         Quaternion targetRotation = Quaternion.LookRotation(currentInputDirection, Vector3.up);
-
-        Quaternion newRotation = Quaternion.Slerp(
-            rb.rotation,
-            targetRotation,
-            rotationSpeed * Time.fixedDeltaTime
-        );
-
+        Quaternion newRotation = Quaternion.Slerp(rb.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
         rb.MoveRotation(newRotation);
     }
 
     private void TryAttack()
     {
         if (Time.time < nextAttackTime)
+        {
+            animator.SetBool("Mining", false);
             return;
+        }
 
+        animator.SetBool("Mining", true);
         nextAttackTime = Time.time + 1f / attackRate;
 
         Vector3 origin = transform.position + transform.forward * -0.25f;
         Vector3 direction = transform.forward;
 
-        // Tref bloky i hráče jedním castem
-        if (Physics.SphereCast(origin,
-                                sphereRadius,
-                                direction,
-                                out RaycastHit hit,
-                                attackDistance,
-                                destructibleLayer | playerLayer,
-                                QueryTriggerInteraction.Ignore))
+        if (Physics.SphereCast(origin, sphereRadius, direction, out RaycastHit hit, attackDistance, destructibleLayer | playerLayer, QueryTriggerInteraction.Ignore))
         {
             DestructibleBlock block = hit.collider.GetComponent<DestructibleBlock>();
             if (block != null)
@@ -279,12 +286,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-   
-
     private void UpdateAnimator()
     {
-        if (animator == null)
-            return;
+        if (animator == null) return;
 
         Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
         float speed = horizontalVelocity.magnitude;
@@ -294,7 +298,6 @@ public class PlayerController : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        // Attack range
         Gizmos.color = Color.red;
         Vector3 origin = transform.position + transform.forward * -0.25f;
         Vector3 end = origin + transform.forward * attackDistance;
@@ -303,7 +306,6 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawLine(origin + Vector3.right * sphereRadius, end + Vector3.right * sphereRadius);
         Gizmos.DrawLine(origin - Vector3.right * sphereRadius, end - Vector3.right * sphereRadius);
 
-        // Pickup radius
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, pickupRadius);
     }
@@ -311,15 +313,9 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (isDead) return;
-
-        // Look for the DestructibleBlock script on whatever we touched
         if (other.TryGetComponent<DestructibleBlock>(out DestructibleBlock block))
         {
-            // Check our new boolean
-            if (block.isFallingHazard)
-            {
-                Die();
-            }
+            if (block.isFallingHazard) Die();
         }
     }
 
@@ -327,42 +323,24 @@ public class PlayerController : MonoBehaviour
     {
         AudioManager.Instance.Play("Splat");
         canMove = false;
-        Vector3 newScale = new Vector3(1f, 0.1f, 1f);
-        characterVisual.transform.localScale = newScale;
+        characterVisual.transform.localScale = new Vector3(1f, 0.1f, 1f);
         isDead = true;
-        Debug.Log("<color=red><b>SQUASHED!</b></color> Block caught the player.");
-
-        // Stop movement
         this.enabled = false;
-        if (GetComponent<CharacterController>())
-            GetComponent<CharacterController>().enabled = false;
         onDeath?.Invoke();
     }
 
     public IEnumerator RespawnEffect(float duration)
     {
-        Vector3 newScale = new Vector3(1f, 1f, 1f);
-        characterVisual.transform.localScale = newScale;
+        characterVisual.transform.localScale = Vector3.one;
         playerRenderer.enabled = true;
         float elapsed = 0;
-
         while (elapsed < duration)
         {
-            // bool isVisible = (Mathf.FloorToInt(elapsed * 15f) % 2 == 0);
-            // this.gameObject.SetActive(isVisible);
-            //
-            // float scalePulse = 1.0f + (Mathf.Sin(elapsed * 12f) * 0.15f);
-            // this.transform.localScale = new Vector3(1f, 1f, 1f) * scalePulse;
-
             elapsed += Time.deltaTime;
             yield return null;
         }
-
-        // Reset to normal
         playerRenderer.material.color = originalColor;
         this.enabled = true;
-        if (GetComponent<CharacterController>())
-            GetComponent<CharacterController>().enabled = true;
         canMove = true;
         isDead = false;
     }

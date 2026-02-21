@@ -47,24 +47,37 @@ MonoBehaviour:
   sounds:
   - name: Steps_1
     clip:
-    - {fileID: 8300000, guid: 6c477f4da034c0148946c437df5765f4, type: 3}
-    - {fileID: 8300000, guid: cd24b0b44239122438477f655aebf668, type: 3}
+    - {fileID: 8300000, guid: 9fe745c5c6af62143aa2783d25f8a100, type: 3}
+    - {fileID: 8300000, guid: 3e711cbdbe628c24db20224ab8403dc6, type: 3}
+    - {fileID: 8300000, guid: 65ec6a0a4f656b6449021166137918d0, type: 3}
+    - {fileID: 8300000, guid: ae896d7f3449a214ea4f87a2470e8b5b, type: 3}
+    - {fileID: 8300000, guid: 2b3adeddeefd93c4db1d077cb8665425, type: 3}
+    - {fileID: 8300000, guid: 73c36c677cd3578438bd130393384217, type: 3}
+    - {fileID: 8300000, guid: 6a4d26642aa7c6f47bfba57bd66171a1, type: 3}
+    - {fileID: 8300000, guid: e22add1413e167b4ca26865338ad8440, type: 3}
+    - {fileID: 8300000, guid: 6a6e66d9e88ce1b42b7e3a2612269af7, type: 3}
+    - {fileID: 8300000, guid: 672d0041714ada94bbb6bda11c360ccd, type: 3}
     volume: 0.2
     pitch: 1
     loop: 1
     source: {fileID: 0}
   - name: Steps_2
     clip:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
+    - {fileID: 8300000, guid: 2b3adeddeefd93c4db1d077cb8665425, type: 3}
     volume: 0.2
     pitch: 0
     loop: 1
     source: {fileID: 0}
   - name: Mining
     clip:
-    - {fileID: 8300000, guid: c76744841322fc045985efb49ca8ede3, type: 3}
+    - {fileID: 8300000, guid: c1066ea8331c75841b225cb47f5e2170, type: 3}
+    - {fileID: 8300000, guid: 0ae995c54e436ed46a0019c06a269adf, type: 3}
+    - {fileID: 8300000, guid: 44f51ac4201af0644bb52325aae3177a, type: 3}
+    - {fileID: 8300000, guid: 9d60de2f4b76db0419581da9dae2026e, type: 3}
+    - {fileID: 8300000, guid: 07f8c8c425953d44fbcd3fc3b6c47e88, type: 3}
+    - {fileID: 8300000, guid: f17d193deee1b9445a0ad809416a80b0, type: 3}
+    - {fileID: 8300000, guid: b64e8e1a379f5b74c848eae1bf2d7888, type: 3}
+    - {fileID: 8300000, guid: 9bb11a69300352d45b6a5e1dffb2a6b6, type: 3}
     volume: 0.3
     pitch: 1
     loop: 0
@@ -86,7 +99,7 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: Rock_Throw
     clip:
-    - {fileID: 8300000, guid: 90937f306e1cc404087c8b7d9c24705a, type: 3}
+    - {fileID: 8300000, guid: 417881a5df880114393609ff7fe0c605, type: 3}
     volume: 0.3
     pitch: 0
     loop: 0
@@ -94,23 +107,21 @@ MonoBehaviour:
   - name: Grunt_1
     clip:
     - {fileID: 8300000, guid: 60194a88f1ebb8f49afa402e184bae97, type: 3}
-    - {fileID: 8300000, guid: 4dc08ad4b302a95439504a3202674a12, type: 3}
+    - {fileID: 8300000, guid: 53189930c93d5c2428b694df93de4c56, type: 3}
     volume: 0.4
     pitch: 0
     loop: 0
     source: {fileID: 0}
   - name: Grunt_2
     clip:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
+    - {fileID: 8300000, guid: 0ed27866b41b4b243951c5f35ee9990f, type: 3}
     volume: 0
     pitch: 0
     loop: 0
     source: {fileID: 0}
   - name: Chest_Drop
     clip:
-    - {fileID: 8300000, guid: 947a5b6b9a9342e408fa42bfbff16a8a, type: 3}
+    - {fileID: 8300000, guid: 998d20f7211572747b00e327da774137, type: 3}
     volume: 0.3
     pitch: 0
     loop: 0
@@ -124,16 +135,14 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: Elevator_Open
     clip:
-    - {fileID: 8300000, guid: 5671b3232dad2764abc32c0745c1dffd, type: 3}
+    - {fileID: 8300000, guid: 0ed27866b41b4b243951c5f35ee9990f, type: 3}
     volume: 0.3
-    pitch: 0
+    pitch: 0.1
     loop: 0
     source: {fileID: 0}
   - name: Elevator_Ding
     clip:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
+    - {fileID: 8300000, guid: 442b9e4aaf3378b4a84cfe69984ef919, type: 3}
     volume: 0.35
     pitch: 0
     loop: 0
