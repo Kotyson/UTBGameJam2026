@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
@@ -10,17 +12,18 @@ public class PlayerController : MonoBehaviour
         ArrowKeys
     }
 
-    [Header("Control Settings")]
-    public ControlType controlType;
+    [Header("Control Settings")] public ControlType controlType;
     private Vector3 currentInputDirection;
 
-    [Header("Movement Settings")]
-    [SerializeField] private float moveForce = 20f;
+    [Header("Movement Settings")] [SerializeField]
+    private float moveForce = 20f;
+
     [SerializeField] private float maxSpeed = 8f;
     [SerializeField] private float rotationSpeed = 15f;
 
-    [Header("Attack Settings")]
-    [SerializeField] private float sphereRadius = 0.5f;
+    [Header("Attack Settings")] [SerializeField]
+    private float sphereRadius = 0.5f;
+
     [SerializeField] private float attackDistance = 2f;
     [SerializeField] private float attackDamage = 1f;
     [SerializeField] private float attackRate = 4f;
@@ -36,23 +39,37 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask itemLayer;
     [SerializeField] private GameObject pickaxeVisual;
 
+    [Header("Status")] [SerializeField] private bool isDead = false;
+
     [SerializeField] public Animator animator;
+    [SerializeField] private Transform characterVisual;
+    private bool canMove = true;
+    private Renderer playerRenderer;
+    private Color originalColor;
+    public Transform spawnPoint;
+
+    private float nextAttackTime;
 
     private float nextAttackTime;
     private Rigidbody rb;
     private PickupItem heldItem;
     private Chest nearbyChest;
 
+    [Header("Events")] public UnityEvent onDeath;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         if (animator == null)
             animator = GetComponentInChildren<Animator>();
+        playerRenderer = GetComponentInChildren<Renderer>();
+        originalColor = playerRenderer.material.color;
     }
 
     private void Update()
     {
-        currentInputDirection = isStunned ? Vector3.zero : GetInput();
+        if (!canMove) return;
+        currentInputDirection = GetInput();
 
         // Attack – pouze pokud hráč nemá předmět v ruce a není stunnutý
         if (!isStunned && heldItem == null)
@@ -231,8 +248,6 @@ public class PlayerController : MonoBehaviour
         rb.MoveRotation(newRotation);
     }
 
-    
-
     private void TryAttack()
     {
         if (Time.time < nextAttackTime)
@@ -269,15 +284,14 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateAnimator()
     {
-        if (animator == null) return;
+        if (animator == null)
+            return;
 
         Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
         float speed = horizontalVelocity.magnitude;
 
         animator.SetFloat("Speed", speed, 0.1f, Time.fixedDeltaTime);
     }
-
-    
 
     private void OnDrawGizmosSelected()
     {
@@ -293,5 +307,63 @@ public class PlayerController : MonoBehaviour
         // Pickup radius
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, pickupRadius);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (isDead) return;
+
+        // Look for the DestructibleBlock script on whatever we touched
+        if (other.TryGetComponent<DestructibleBlock>(out DestructibleBlock block))
+        {
+            // Check our new boolean
+            if (block.isFallingHazard)
+            {
+                Die();
+            }
+        }
+    }
+
+    private void Die()
+    {
+        canMove = false;
+        Vector3 newScale = new Vector3(1f, 0.1f, 1f);
+        characterVisual.transform.localScale = newScale;
+        isDead = true;
+        Debug.Log("<color=red><b>SQUASHED!</b></color> Block caught the player.");
+
+        // Stop movement
+        this.enabled = false;
+        if (GetComponent<CharacterController>())
+            GetComponent<CharacterController>().enabled = false;
+        onDeath?.Invoke();
+    }
+
+    public IEnumerator RespawnEffect(float duration)
+    {
+        Vector3 newScale = new Vector3(1f, 1f, 1f);
+        characterVisual.transform.localScale = newScale;
+        playerRenderer.enabled = true;
+        float elapsed = 0;
+
+        while (elapsed < duration)
+        {
+            // bool isVisible = (Mathf.FloorToInt(elapsed * 15f) % 2 == 0);
+            // this.gameObject.SetActive(isVisible);
+            //
+            // float scalePulse = 1.0f + (Mathf.Sin(elapsed * 12f) * 0.15f);
+            // this.transform.localScale = new Vector3(1f, 1f, 1f) * scalePulse;
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        // Reset to normal
+        playerRenderer.material.color = originalColor;
+        this.enabled = true;
+        if (GetComponent<CharacterController>())
+            GetComponent<CharacterController>().enabled = true;
+        canMove = true;
+        isDead = false;
     }
 }
