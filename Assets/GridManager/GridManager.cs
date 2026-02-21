@@ -65,11 +65,29 @@ public class GridManager : MonoBehaviour
     void Update()
     {
         if (levelData == null) return;
+        if (Application.isEditor)
+        {
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                PaintLevel = !PaintLevel;
+                Debug.Log("Paint level " + PaintLevel);
+            }
 
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                selectedTypeIndex = 0;
+                Debug.Log("selectedTypeIndex " + selectedTypeIndex);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                selectedTypeIndex = 2;
+                Debug.Log("selectedTypeIndex " + selectedTypeIndex);
+            }
+        }
         if (PaintLevel)
         {
-            if (Input.GetMouseButtonDown(0)) HandleEditorClick(true);
-            if (Input.GetMouseButtonDown(1)) HandleEditorClick(false);
+            if (Input.GetMouseButton(0)) HandleEditorClick(true);
+            if (Input.GetMouseButton(1)) HandleEditorClick(false);
         }
         else
         {
