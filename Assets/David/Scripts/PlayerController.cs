@@ -47,8 +47,7 @@ public class PlayerController : MonoBehaviour
     private Renderer playerRenderer;
     private Color originalColor;
     public Transform spawnPoint;
-
-    private float nextAttackTime;
+    
 
     private float nextAttackTime;
     private Rigidbody rb;
