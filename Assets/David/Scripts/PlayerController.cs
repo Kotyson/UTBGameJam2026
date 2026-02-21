@@ -16,19 +16,14 @@ public class PlayerController : MonoBehaviour
     private Vector3 currentInputDirection;
 
     [Header("Movement Settings")]
-    [SerializeField]
-    private float moveForce = 20f;
-
+    [SerializeField] private float moveForce = 20f;
     [SerializeField] private float maxSpeed = 8f;
     [SerializeField] private float rotationSpeed = 15f;
-
     [SerializeField] private float footstepDelay = 0.5f;
     private float footstepTimer;
 
     [Header("Attack Settings")]
-    [SerializeField]
-    private float sphereRadius = 0.5f;
-
+    [SerializeField] private float sphereRadius = 0.5f;
     [SerializeField] private float attackDistance = 2f;
     [SerializeField] private float attackDamage = 1f;
     [SerializeField] private float attackRate = 4f;
@@ -44,15 +39,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask itemLayer;
     [SerializeField] private GameObject pickaxeVisual;
 
-    [Header("Status")][SerializeField] private bool isDead = false;
+    [Header("Money")]
+    private int carriedMoney = 0;
 
+    [Header("Status")]
+    [SerializeField] private bool isDead = false;
     [SerializeField] public Animator animator;
     [SerializeField] private Transform characterVisual;
     private bool canMove = true;
     private Renderer playerRenderer;
     private Color originalColor;
     public Transform spawnPoint;
-
 
     private float nextAttackTime;
     private Rigidbody rb;
@@ -78,13 +75,9 @@ public class PlayerController : MonoBehaviour
         if (!isStunned && heldItem == null)
         {
             if (Input.GetKey(attackKey))
-            {
                 TryAttack();
-            }
             else
-            {
                 animator.SetBool("Mining", false);
-            }
         }
         else
         {
@@ -147,6 +140,15 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            // Pokud je hráè u chestky a nese peníze, odevzdá je
+            if (nearbyChest != null && carriedMoney > 0)
+            {
+                nearbyChest.DepositMoney(carriedMoney);
+                carriedMoney = 0;
+                Debug.Log("Peníze odevzdány do chestky.");
+                return;
+            }
+
             Collider[] hits = Physics.OverlapSphere(transform.position, pickupRadius, itemLayer);
             if (hits.Length == 0) return;
 
@@ -169,6 +171,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // --- Money ---
+    public void AddMoney(int amount)
+    {
+        carriedMoney += amount;
+        Debug.Log($"[Player] Pøièteno {amount} penìz | Nese: {carriedMoney}");
+    }
+
+    public int GetCarriedMoney() => carriedMoney;
+
+    // --- Chest ---
     public void SetNearChest(Chest chest)
     {
         nearbyChest = chest;

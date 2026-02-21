@@ -5,18 +5,17 @@ public class DestructibleBlock : MonoBehaviour
 {
     [Header("Block Settings")]
     public BlockData blockData;
-
     private Vector3Int gridPosition;
     private GridManager gridManager;
     private float currentHealth;
+
     [Header("Status")]
-    private bool isDestroying = false; // Prevents double-triggering
+    private bool isDestroying = false;
     public bool isFallingHazard = false;
 
     [Header("VFX Settings")]
     [SerializeField] private float shakeDuration = 0.15f;
     [SerializeField] private float shakeMagnitude = 0.1f;
-    [SerializeField] private float shrinkSpeed = 5f; // How fast it "pufs" away
 
     private Coroutine shakeRoutine;
     private Vector3 originalLocalPos;
@@ -33,8 +32,6 @@ public class DestructibleBlock : MonoBehaviour
     {
         gridManager = manager;
         gridPosition = pos;
-        
-        // Reset scale in case it was pooled or reused
         transform.localScale = originalScale;
         isDestroying = false;
     }
@@ -42,21 +39,17 @@ public class DestructibleBlock : MonoBehaviour
     public void TakeDamage(float amount)
     {
         if (isDestroying) return;
+
         AudioManager.Instance.Play("Mining");
         currentHealth -= amount;
-    
+
         if (shakeRoutine != null) StopCoroutine(shakeRoutine);
         shakeRoutine = StartCoroutine(Shake());
 
         if (currentHealth <= 0)
         {
             isDestroying = true;
-        
-            // 1. Tell GridManager to remove it from LOGIC immediately
-            // This makes neighbors update their meshes NOW.
             gridManager.InitiateDestruction(gridPosition);
-
-            // 2. Start the visual puff/shrink
             StartCoroutine(ShrinkAndDestroy());
         }
     }
@@ -64,11 +57,10 @@ public class DestructibleBlock : MonoBehaviour
     private IEnumerator ShrinkAndDestroy()
     {
         AudioManager.Instance.Play("Rock_Destroy_1");
-        // Disable collider so player/NPCs don't bump into a "ghost" block
+
         Collider col = GetComponentInChildren<Collider>();
         if (col != null) col.enabled = false;
 
-        // Visual shrink animation
         Vector3 targetScale = Vector3.zero;
         while (Vector3.Distance(transform.localScale, targetScale) > 0.01f)
         {
@@ -76,10 +68,69 @@ public class DestructibleBlock : MonoBehaviour
             yield return null;
         }
 
-        // drop items, money !!!!!!!!!!!
-        
-        // 3. Finally, tell GridManager to destroy the object and start the respawn timer
+        HandleLootDrop();
+
+        yield return null;
+
         gridManager.FinishDestruction(gridPosition);
+    }
+
+    private void HandleLootDrop()
+    {
+        if (blockData == null || blockData.dropTable == null)
+        {
+            Debug.LogWarning($"Blok '{gameObject.name}' nemá pøiøazený DropTable!");
+            return;
+        }
+
+        DropTable table = blockData.dropTable;
+
+        // --- PENÍZE: pøièteme hráèi do kapsy ---
+        // Najdeme nejbližšího hráèe v okolí (ten kdo tìžil)
+        PlayerController nearestPlayer = FindNearestPlayer();
+        if (nearestPlayer != null)
+        {
+            int money = table.RollMoney();
+            nearestPlayer.AddMoney(money);
+        }
+
+        // --- GEM ---
+        GemData gem = table.RollGem();
+        if (gem == null)
+        {
+            Debug.Log("Žádný gem nevypadl.");
+            return;
+        }
+
+        if (gem.prefab == null)
+        {
+            Debug.LogError($"Gem '{gem.gemName}' nemá pøiøazený prefab!");
+            return;
+        }
+
+        Vector3 spawnPos = transform.position + Vector3.up * 0.5f;
+        GameObject spawned = Instantiate(gem.prefab, spawnPos, Quaternion.identity);
+        spawned.transform.SetParent(null);
+        Debug.Log($"Gem spawnut: '{gem.gemName}' na {spawned.transform.position}");
+    }
+
+    private PlayerController FindNearestPlayer()
+    {
+        PlayerController[] players = FindObjectsByType<PlayerController>(FindObjectsSortMode.None);
+        PlayerController nearest = null;
+        float minDist = float.MaxValue;
+
+        foreach (PlayerController p in players)
+        {
+            float dist = Vector3.Distance(transform.position, p.transform.position);
+            if (dist < minDist)
+            {
+                minDist = dist;
+                nearest = p;
+            }
+        }
+
+        return nearest;
     }
 
     private IEnumerator Shake()
@@ -89,9 +140,7 @@ public class DestructibleBlock : MonoBehaviour
         {
             float offsetX = Random.Range(-1f, 1f) * shakeMagnitude;
             float offsetZ = Random.Range(-1f, 1f) * shakeMagnitude;
-
             transform.localPosition = originalLocalPos + new Vector3(offsetX, 0f, offsetZ);
-
             elapsed += Time.deltaTime;
             yield return null;
         }

@@ -25,4 +25,10 @@ public class Chest : MonoBehaviour
         Debug.Log($"[Chest] Pøedmìt vložen! +{value} bodù | Celkem: {totalPoints}");
         Destroy(item.gameObject);
     }
+
+    public void DepositMoney(int amount)
+    {
+        totalPoints += amount;
+        Debug.Log($"[Chest] Peníze vloženy! +{amount} | Celkem: {totalPoints}");
+    }
 }

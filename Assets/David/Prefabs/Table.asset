@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 888250ad5871fb04cbf42fba9ee9f3f3, type: 3}
+  m_Name: Table
+  m_EditorClassIdentifier: Assembly-CSharp::DropTable
+  minMoney: 10
+  maxMoney: 50
+  gems:
+  - gem: {fileID: 11400000, guid: 9ca4f2680edea8c478d3d5e1b64920bd, type: 2}
+    chance: 30
+  - gem: {fileID: 11400000, guid: 43b812f81a306b1468df369275720f82, type: 2}
+    chance: 15
+  - gem: {fileID: 11400000, guid: af70d0946462f9642a47bf794bb2169c, type: 2}
+    chance: 5

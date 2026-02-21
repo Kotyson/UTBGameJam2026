@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e0318cfdb0164749a9904b13fcb5646, type: 3}
-  m_Name: hlina
-  m_EditorClassIdentifier: Assembly-CSharp::BlockData
-  blockName: hlina
-  maxHealth: 10
-  dropTable: {fileID: 11400000, guid: 19800d25cf95afa43bfcb73f247b6f33, type: 2}
+  m_Script: {fileID: 11500000, guid: cddf19534b5d6164aa65d6578cbe2d5c, type: 3}
+  m_Name: Diamant
+  m_EditorClassIdentifier: Assembly-CSharp::GemData
+  gemName: Diamant
+  prefab: {fileID: 719651625372576494, guid: 2b5fd596567cd5a42aef1e054106a3df, type: 3}
+  value: 40
