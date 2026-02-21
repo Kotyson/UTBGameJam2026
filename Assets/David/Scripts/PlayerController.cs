@@ -1,8 +1,7 @@
-using System.Runtime.Serialization;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class SimpleTopDownController : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     public enum ControlType
     {
@@ -12,6 +11,9 @@ public class SimpleTopDownController : MonoBehaviour
 
     [Header("Control Settings")]
     public ControlType controlType;
+    private Vector3 currentInputDirection;
+    [SerializeField] private KeyCode buildKey = KeyCode.E;
+    [SerializeField] private GridManager gridManager;
 
     [Header("Movement Settings")]
     [SerializeField] private float moveForce = 20f;
@@ -27,8 +29,6 @@ public class SimpleTopDownController : MonoBehaviour
     [SerializeField] private LayerMask destructibleLayer;
 
     private float nextAttackTime;
-    private Vector3 currentInputDirection;
-
 
     private Rigidbody rb;
 
@@ -46,11 +46,16 @@ public class SimpleTopDownController : MonoBehaviour
         ClampVelocity();
         RotateTowardsInput(); // changed
     }
-        private void Update()
+    private void Update()
     {
         if (Input.GetKey(attackKey))
         {
-            TryAttack();    
+            TryAttack();
+        }
+
+        if (Input.GetKeyDown(buildKey))
+        {
+            TryBuild();
         }
     }
 
@@ -115,7 +120,7 @@ public class SimpleTopDownController : MonoBehaviour
 
         nextAttackTime = Time.time + 1f / attackRate;
 
-        Vector3 origin = transform.position + transform.forward * -0.1f;
+        Vector3 origin = transform.position + transform.forward * -0.25f;
         Vector3 direction = transform.forward;
 
         if (Physics.SphereCast(origin,
@@ -134,11 +139,31 @@ public class SimpleTopDownController : MonoBehaviour
             }
         }
     }
+    private void TryBuild()
+    {
+        if (gridManager == null)
+            return;
+
+        // Always build exactly one grid cell in front
+        float buildDistance = gridManager.gridSize;
+
+        Vector3 buildWorldPos = transform.position + transform.forward * buildDistance;
+
+        // Convert world position to grid position using GridManager
+        Vector3Int gridPos = gridManager.WorldToGrid(buildWorldPos);
+
+        // Prevent building inside player's current grid cell
+        Vector3Int playerGridPos = gridManager.WorldToGrid(transform.position);
+        if (gridPos == playerGridPos)
+            return;
+
+        gridManager.TryAddBlock(gridPos);
+    }
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
 
-        Vector3 origin = transform.position + transform.forward * -0.1f;
+        Vector3 origin = transform.position + transform.forward * -0.25f;
         Vector3 end = origin + transform.forward * attackDistance;
 
         Gizmos.DrawWireSphere(origin, sphereRadius);

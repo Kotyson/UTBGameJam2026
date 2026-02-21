@@ -5,20 +5,17 @@ using UnityEngine;
 using UnityEditor;
 #endif
 public class GridManager : MonoBehaviour
-{   
+{
+    [Header("Grid Settings")]
+    public float gridSize = 1f;
+
+    [Tooltip("Array of 16 prefabs. Index corresponds to the bitmask value (0-15).")]
+    public GameObject[] tilePrefabs = new GameObject[16];
     [System.Serializable]
     public class LevelData
     {
         public List<Vector3Int> tilePositions = new List<Vector3Int>();
     }
-    [Header("Grid Settings")]
-    public float gridSize = 1f;
-    // there should be a description of how to work with ground
-    // is there a way to have it written in the inspector all the time? 
-    [Header("The ground plane must have a collider and be tagged 'Ground'")]
-    
-    [Tooltip("Array of 16 prefabs. Index corresponds to the bitmask value (0-15).")]
-    public GameObject[] tilePrefabs = new GameObject[16];
 
     // Dictionary stores the grid position and the current GameObject occupying it
     private Dictionary<Vector3Int, GameObject> grid = new Dictionary<Vector3Int, GameObject>();
@@ -92,6 +89,13 @@ public class GridManager : MonoBehaviour
         // Tell the 4 neighbors to update themselves
         UpdateNeighbors(gridPos);
     }
+    public void TryAddBlock(Vector3Int gridPos)
+    {
+        if (grid.ContainsKey(gridPos))
+            return;
+
+        AddBlock(gridPos);
+    }
 
     // --- The Bitmask Auto-Tiling Logic ---
 
@@ -135,27 +139,12 @@ public class GridManager : MonoBehaviour
         grid[gridPos] = newBlock;
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.gray;
-
-        int size = 20;
-
-        for (int x = -size; x <= size; x++)
-        {
-            for (int z = -size; z <= size; z++)
-            {
-                Vector3 pos = new Vector3(x * gridSize, 0, z * gridSize);
-                Gizmos.DrawWireCube(pos, new Vector3(gridSize, 0.01f, gridSize));
-            }
-        }
-    }
     // --- Helpers ---
-    private Vector3Int WorldToGrid(Vector3 worldPos)
+    public Vector3Int WorldToGrid(Vector3 worldPos)
     {
         return new Vector3Int(
             Mathf.RoundToInt(worldPos.x / gridSize),
-            Mathf.RoundToInt(worldPos.y / gridSize),
+            0,
             Mathf.RoundToInt(worldPos.z / gridSize)
         );
     }
@@ -164,8 +153,6 @@ public class GridManager : MonoBehaviour
     {
         return new Vector3(gridPos.x * gridSize, gridPos.y * gridSize, gridPos.z * gridSize);
     }
-
-    #region Level Saving/Loading (Optional)
     public void SaveLevel()
     {
         LevelData data = new LevelData();
@@ -181,39 +168,37 @@ public class GridManager : MonoBehaviour
         Debug.Log("Level Saved!");
     }
     public void LoadLevel()
+{
+    string path = Application.persistentDataPath + "/level.json";
+
+    if (!System.IO.File.Exists(path))
+        return;
+
+    string json = System.IO.File.ReadAllText(path);
+    LevelData data = JsonUtility.FromJson<LevelData>(json);
+
+    // Destroy old tiles
+    foreach (var obj in grid.Values)
     {
-        string path = Application.persistentDataPath + "/level.json";
-
-        if (!System.IO.File.Exists(path))
-            return;
-
-        string json = System.IO.File.ReadAllText(path);
-        LevelData data = JsonUtility.FromJson<LevelData>(json);
-
-        // Destroy old tiles
-        foreach (var obj in grid.Values)
-        {
-            if (obj != null)
-                Destroy(obj);
-        }
-
-        grid.Clear();
-
-        // ✅ PASS 1: Register all grid positions first
-        foreach (Vector3Int pos in data.tilePositions)
-        {
-            if (!grid.ContainsKey(pos))
-                grid.Add(pos, null);
-        }
-
-        // ✅ PASS 2: Now update all tiles
-        foreach (Vector3Int pos in data.tilePositions)
-        {
-            UpdateTile(pos);
-        }
-
-        Debug.Log("Level Loaded Correctly!");
+        if (obj != null)
+            Destroy(obj);
     }
-        
-    #endregion
+
+    grid.Clear();
+
+    //  PASS 1: Register all grid positions first
+    foreach (Vector3Int pos in data.tilePositions)
+    {
+        if (!grid.ContainsKey(pos))
+            grid.Add(pos, null);
+    }
+
+    //  PASS 2: Now update all tiles
+    foreach (Vector3Int pos in data.tilePositions)
+    {
+        UpdateTile(pos);
+    }
+
+    Debug.Log("Level Loaded Correctly!");
+}
 }
