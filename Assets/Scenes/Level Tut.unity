@@ -2204,7 +2204,19 @@ PrefabInstance:
       objectReference: {fileID: 694448924}
     - target: {fileID: 7114430027713177439, guid: c763f3ee6f3d5424e9277eb5d3186ed4, type: 3}
       propertyPath: totalTime
-      value: 1000
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 7114430027713177439, guid: c763f3ee6f3d5424e9277eb5d3186ed4, type: 3}
+      propertyPath: player1Chest
+      value: 
+      objectReference: {fileID: 297703423}
+    - target: {fileID: 7114430027713177439, guid: c763f3ee6f3d5424e9277eb5d3186ed4, type: 3}
+      propertyPath: player2Chest
+      value: 
+      objectReference: {fileID: 471099629}
+    - target: {fileID: 7114430027713177439, guid: c763f3ee6f3d5424e9277eb5d3186ed4, type: 3}
+      propertyPath: nextSceneName
+      value: Level1
       objectReference: {fileID: 0}
     - target: {fileID: 7114430027713177439, guid: c763f3ee6f3d5424e9277eb5d3186ed4, type: 3}
       propertyPath: OnTimerEndEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
