@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 383aa811fee1b93488d8669fa7e479a4, type: 3}
+  m_Name: level2
+  m_EditorClassIdentifier: Assembly-CSharp::LevelDataSO
+  availableTileSets:
+  - name: cave
+    prefabs:
+    - {fileID: 391558695438354719, guid: 852ed082c36ec114f85034328917a2b9, type: 3}
+    - {fileID: 7506232723701583631, guid: ab91ccfd357f1cc448c16ff942144721, type: 3}
+    - {fileID: 5694622132793128293, guid: 73a7d648b1166cf46b25b12c7ead8c75, type: 3}
+    - {fileID: 22362102669970664, guid: a74855f21f949c242ad0417e9db43141, type: 3}
+    - {fileID: 7421746491141849702, guid: caad2b2c2a13f2f479a1a9bc54bdf54c, type: 3}
+    - {fileID: 8032237296657274685, guid: 25e08780c838ff242a160b9e49bb4343, type: 3}
+    - {fileID: 1688106818381212941, guid: f24b78411c13c8145a0ea046bc7e97f7, type: 3}
+    - {fileID: 2337349170425260560, guid: 0d4eb261478692e41bd2e69281737dee, type: 3}
+    - {fileID: 6589838783721242220, guid: 5ae913694fbcd784d92d86d24b5e9b13, type: 3}
+    - {fileID: 6727733995478240757, guid: 7299e429e1664c647b146504473e2c46, type: 3}
+    - {fileID: 5276617950208624283, guid: ff6e9d60ca7037b4b9acd646fbe295c5, type: 3}
+    - {fileID: 923258303372549812, guid: 913a45d4a6c09d84a85439ce089dc0f6, type: 3}
+    - {fileID: 6460524226103005595, guid: cfbf183c77aa72c41825d4010a62555b, type: 3}
+    - {fileID: 689997620795567090, guid: d408e85ef6e4e1f4aa4ac0c6f3e87ed7, type: 3}
+    - {fileID: 7060968366249267055, guid: 302b611bf0bf36b46995670f81260303, type: 3}
+    - {fileID: 4688965116422546778, guid: 4618d429e861f834cafe41d145b58cd1, type: 3}
+  - name: rock
+    prefabs:
+    - {fileID: 7209038844399057045, guid: 1664ece1600212c4792c4c2d14638e24, type: 3}
+    - {fileID: 7209038844399057045, guid: 1664ece1600212c4792c4c2d14638e24, type: 3}
+    - {fileID: 7209038844399057045, guid: 1664ece1600212c4792c4c2d14638e24, type: 3}
+    - {fileID: 7209038844399057045, guid: 1664ece1600212c4792c4c2d14638e24, type: 3}
+    - {fileID: 7209038844399057045, guid: 1664ece1600212c4792c4c2d14638e24, type: 3}
+    - {fileID: 7209038844399057045, guid: 1664ece1600212c4792c4c2d14638e24, type: 3}
+    - {fileID: 7209038844399057045, guid: 1664ece1600212c4792c4c2d14638e24, type: 3}
+    - {fileID: 7209038844399057045, guid: 1664ece1600212c4792c4c2d14638e24, type: 3}
+    - {fileID: 7209038844399057045, guid: 1664ece1600212c4792c4c2d14638e24, type: 3}
+    - {fileID: 7209038844399057045, guid: 1664ece1600212c4792c4c2d14638e24, type: 3}
+    - {fileID: 7209038844399057045, guid: 1664ece1600212c4792c4c2d14638e24, type: 3}
+    - {fileID: 7209038844399057045, guid: 1664ece1600212c4792c4c2d14638e24, type: 3}
+    - {fileID: 7209038844399057045, guid: 1664ece1600212c4792c4c2d14638e24, type: 3}
+    - {fileID: 7209038844399057045, guid: 1664ece1600212c4792c4c2d14638e24, type: 3}
+    - {fileID: 7209038844399057045, guid: 1664ece1600212c4792c4c2d14638e24, type: 3}
+    - {fileID: 7209038844399057045, guid: 1664ece1600212c4792c4c2d14638e24, type: 3}
+  - name: boundries
+    prefabs:
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+  placedTiles: []

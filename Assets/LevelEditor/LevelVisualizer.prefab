@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4454556810282267563
+--- !u!1 &4527430166368453380
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,54 +8,41 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1078492622075941657}
-  - component: {fileID: 7839601975329447148}
+  - component: {fileID: 6203144780532948754}
+  - component: {fileID: 8538484334551017515}
   m_Layer: 0
-  m_Name: GridManager
+  m_Name: LevelVisualizer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1078492622075941657
+--- !u!4 &6203144780532948754
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4454556810282267563}
+  m_GameObject: {fileID: 4527430166368453380}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.05656, y: 0, z: 0.16657}
+  m_LocalPosition: {x: 6.69891, y: 0, z: 1.26762}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7839601975329447148
+--- !u!114 &8538484334551017515
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4454556810282267563}
+  m_GameObject: {fileID: 4527430166368453380}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11f584455e78690408c253e36d262363, type: 3}
+  m_Script: {fileID: 11500000, guid: f34b1102e6f10aa409a93aa128a43ad5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GridManager
+  m_EditorClassIdentifier: '::'
   levelData: {fileID: 11400000, guid: 2d543fc89c3168c448d51f0f48c7eb76, type: 2}
   gridSize: 1
-  floorY: 0
-  selectedTypeIndex: 1
-  PaintLevel: 0
-  spawnerZoneIndex: 0
-  randomSpawnPool: 0000000001000000
-  indicatorPrefab: {fileID: 8399097218104448702, guid: 107dfd2195760d84d8d81fdbd990a00e, type: 3}
-  warningTime: 2
-  fallHeight: 10
-  fallSpeed: 15
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  caveRespawnTime: 3
