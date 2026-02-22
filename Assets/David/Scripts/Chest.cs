@@ -1,34 +1,35 @@
 using UnityEngine;
 
-public class Chest : MonoBehaviour
+public class Chest : MonoBehaviour, IInteractable
 {
     private static int totalPoints = 0;
-
-    private void OnTriggerEnter(Collider other)
-    {
-        PlayerController player = other.GetComponent<PlayerController>();
-        if (player != null)
-            player.SetNearChest(this);
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        PlayerController player = other.GetComponent<PlayerController>();
-        if (player != null)
-            player.SetNearChest(null);
-    }
+    [SerializeField] private PlayerController owner;
 
     public void DepositItem(PickupItem item)
     {
-        int value = item.itemValue;
+        int value = 10; // TODO - add real value
         totalPoints += value;
-        Debug.Log($"[Chest] Pøedmìt vložen! +{value} bodù | Celkem: {totalPoints}");
+        Debug.Log($"[Chest] Predmet vlozen! +{value} bode | Celkem: {totalPoints}");
         Destroy(item.gameObject);
     }
 
     public void DepositMoney(int amount)
     {
         totalPoints += amount;
-        Debug.Log($"[Chest] Peníze vloženy! +{amount} | Celkem: {totalPoints}");
+        Debug.Log($"[Chest] Penï¿½ze vloï¿½eny! +{amount} | Celkem: {totalPoints}");
+    }
+    
+    public void Interact(PlayerController interactor)
+    {
+        if (interactor == null || interactor != owner)
+        {
+            Debug.Log("Not owner");
+            return;
+        }
+        Debug.Log("Owner is interacting");
+        if (owner.heldItem != null)
+        {
+            DepositItem(owner.heldItem);
+        }
     }
 }
