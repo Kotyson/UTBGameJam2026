@@ -89,7 +89,7 @@ public class GridManager : MonoBehaviour
             if (Input.GetMouseButton(0)) HandleEditorClick(true);
             if (Input.GetMouseButton(1)) HandleEditorClick(false);
         }
-        else
+        else if (Application.isEditor)
         {
             // Simulate hitting a block with 1 damage
             if (Input.GetMouseButtonDown(0)) SimulatePlayerHittingBlock();

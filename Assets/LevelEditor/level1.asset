@@ -51,22 +51,22 @@ MonoBehaviour:
     - {fileID: 7209038844399057045, guid: 1664ece1600212c4792c4c2d14638e24, type: 3}
   - name: boundries
     prefabs:
-    - {fileID: 3535885628915645944, guid: 591e890def45a6c4abb52b3663c9aaad, type: 3}
-    - {fileID: 3535885628915645944, guid: 591e890def45a6c4abb52b3663c9aaad, type: 3}
-    - {fileID: 3535885628915645944, guid: 591e890def45a6c4abb52b3663c9aaad, type: 3}
-    - {fileID: 3535885628915645944, guid: 591e890def45a6c4abb52b3663c9aaad, type: 3}
-    - {fileID: 3535885628915645944, guid: 591e890def45a6c4abb52b3663c9aaad, type: 3}
-    - {fileID: 3535885628915645944, guid: 591e890def45a6c4abb52b3663c9aaad, type: 3}
-    - {fileID: 3535885628915645944, guid: 591e890def45a6c4abb52b3663c9aaad, type: 3}
-    - {fileID: 3535885628915645944, guid: 591e890def45a6c4abb52b3663c9aaad, type: 3}
-    - {fileID: 3535885628915645944, guid: 591e890def45a6c4abb52b3663c9aaad, type: 3}
-    - {fileID: 3535885628915645944, guid: 591e890def45a6c4abb52b3663c9aaad, type: 3}
-    - {fileID: 3535885628915645944, guid: 591e890def45a6c4abb52b3663c9aaad, type: 3}
-    - {fileID: 3535885628915645944, guid: 591e890def45a6c4abb52b3663c9aaad, type: 3}
-    - {fileID: 3535885628915645944, guid: 591e890def45a6c4abb52b3663c9aaad, type: 3}
-    - {fileID: 3535885628915645944, guid: 591e890def45a6c4abb52b3663c9aaad, type: 3}
-    - {fileID: 3535885628915645944, guid: 591e890def45a6c4abb52b3663c9aaad, type: 3}
-    - {fileID: 3535885628915645944, guid: 591e890def45a6c4abb52b3663c9aaad, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
+    - {fileID: 5623962900186236941, guid: eb025f78429dcc645a5aa391a7695b64, type: 3}
   placedTiles:
   - position: {x: 0, y: 0, z: -3}
     typeIndex: 2

@@ -54,6 +54,7 @@ public class PlayerController : MonoBehaviour
     private Renderer playerRenderer;
     private Color originalColor;
     public Transform spawnPoint;
+    [SerializeField] private float stunTime = 2.0f;
 
     private float nextAttackTime;
     private Rigidbody rb;
@@ -76,23 +77,26 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (!canMove) return;
+        // If dead or cannot move at all (like during respawn), exit immediately
+        if (!canMove || isDead) return;
+
+        // --- ADD THIS STUN CHECK ---
+        if (isStunned)
+        {
+            currentInputDirection = Vector3.zero; // Stop input
+            animator.SetBool("Mining", false);    // Stop any mining animation
+            return; // Exit Update so we don't process attacks or items
+        }
+
         currentInputDirection = GetInput();
-
-        if (!isStunned && heldItem == null)
+        
+        if (heldItem == null)
         {
-            if (Input.GetKey(attackKey))
-                TryAttack();
-            else
-                animator.SetBool("Mining", false);
+            if (Input.GetKey(attackKey)) TryAttack();
+            else animator.SetBool("Mining", false);
         }
-        else
-        {
-            animator.SetBool("Mining", false);
-        }
-
-        if (!isStunned) HandleItemInput();
-
+    
+        HandleItemInput();
         HandleFootsteps();
     }
 
@@ -103,6 +107,17 @@ public class PlayerController : MonoBehaviour
     
     private void FixedUpdate()
     {
+        // If stunned, dead, or canMove is false, we stop physics
+        if (isStunned || isDead || !canMove)
+        {
+            // Stop horizontal movement instantly so they don't "slide" while stunned
+            rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
+        
+            // Still update the animator so the "Speed" parameter goes to 0
+            UpdateAnimator(); 
+            return; 
+        }
+
         Move(currentInputDirection);
         ClampVelocity();
         RotateTowardsInput();
@@ -223,18 +238,21 @@ public class PlayerController : MonoBehaviour
         // Draw the sphere at the end so you can see its size
         Gizmos.DrawWireSphere(origin + direction * interactDistance, interactRadius);
     }
-
-    // public void SetNearChest(Chest chest)
-    // {
-    //     nearbyChest = chest;
-    // }
+    
 
     private bool isStunned = false;
+
+    private Coroutine stunRoutine; // Variable to keep track of the active timer
 
     public void Stun()
     {
         AudioManager.Instance.Play("Grunt_1");
         animator.SetBool("Stun", true);
+
+        if (stunRoutine != null)
+        {
+            StopCoroutine(stunRoutine);
+        }
 
         Vector3 velocity = rb.linearVelocity;
         if (velocity.magnitude > 0.1f)
@@ -243,18 +261,24 @@ public class PlayerController : MonoBehaviour
             rb.rotation = targetRotation;
         }
 
-        if (isStunned)
-            StopCoroutine(ResetStun());
-
-        StartCoroutine(ResetStun());
+        stunRoutine = StartCoroutine(ResetStun());
     }
 
     private IEnumerator ResetStun()
     {
         isStunned = true;
-        yield return new WaitForSeconds(1.5f);
+    
+        // 1. Wait a tiny frame for the Animator to transition into the Stun state
+        yield return null; 
+
+        // 2. Get the length of whatever animation is currently playing on layer 0
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        
+        yield return new WaitForSeconds(4); 
+
         isStunned = false;
         animator.SetBool("Stun", false);
+        stunRoutine = null;
     }
 
     public void ApplyKnockback(Vector3 direction, float force)
