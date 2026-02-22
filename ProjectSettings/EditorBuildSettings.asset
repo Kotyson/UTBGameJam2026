@@ -9,8 +9,17 @@ EditorBuildSettings:
     path: Assets/Scenes/GridTestScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
+    path: Assets/Scenes/Menu.unity
+    guid: 08f562d67b130564cbe4d2f89525d108
+  - enabled: 1
     path: Assets/Scenes/Level1.unity
     guid: 99a91206b4bcde146b7374a66264f488
+  - enabled: 1
+    path: Assets/Scenes/Level2.unity
+    guid: 37975d9f8bfa7744a91330469e47d69c
+  - enabled: 1
+    path: Assets/Scenes/Level3.unity
+    guid: 8d1bd73e53f7e9045a5ba07932d1f0d1
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
