@@ -3,8 +3,11 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
-    public PlayerController player1; // Changed to script reference for easier access
-    public PlayerController player2; // Changed to script reference for easier access
+    public PlayerController player1; 
+    public PlayerController player2;
+
+    public Chest minecartP1;
+    public Chest minecartP2;
     
     [Header("Timings")]
     public float deathDelay = 2f;    // Time spent "dead" before appearing at spawn
@@ -29,5 +32,10 @@ public class GameManager : MonoBehaviour
 
         // 4. Sequence complete! Player can move again (handled inside player.RespawnEffect)
         Debug.Log("Player Respawned and Ready!");
+    }
+
+    public void EndGame()
+    {
+        Debug.Log("Game Over! Title screen");
     }
 }

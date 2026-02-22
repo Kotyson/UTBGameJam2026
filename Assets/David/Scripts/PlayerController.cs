@@ -197,6 +197,15 @@ public class PlayerController : MonoBehaviour
         if (pickaxeVisual != null) pickaxeVisual.SetActive(true);
     }
     
+    private void DropItem()
+    {
+        // Pass 'gameObject' as the 3rd argument (the thrower)
+        // Destroy(heldItem.gameObject);
+        heldItem = null;
+
+        if (pickaxeVisual != null) pickaxeVisual.SetActive(true);
+    }
+    
     private IInteractable GetNearestInteractable()
     {
         // Use your OverlapSphere approach to find everything nearby
@@ -391,11 +400,14 @@ public class PlayerController : MonoBehaviour
         characterVisual.transform.localScale = new Vector3(1f, 0.1f, 1f);
         isDead = true;
         this.enabled = false;
+        carriedMoney = 0;
+        DropItem();
         onDeath?.Invoke();
     }
 
     public IEnumerator RespawnEffect(float duration)
     {
+        animator.SetBool("Stun", true); 
         characterVisual.transform.localScale = Vector3.one;
         playerRenderer.enabled = true;
         float elapsed = 0;
@@ -405,6 +417,7 @@ public class PlayerController : MonoBehaviour
             yield return null;
         }
         playerRenderer.material.color = originalColor;
+        animator.SetBool("Stun", false); 
         this.enabled = true;
         canMove = true;
         isDead = false;
