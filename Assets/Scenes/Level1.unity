@@ -939,6 +939,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2783596371389396226, guid: 8cae32ea985d4c84f988ff7958f4163b, type: 3}
+      propertyPath: m_Color.a
+      value: 0.08627451
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783596371389396226, guid: 8cae32ea985d4c84f988ff7958f4163b, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783596371389396226, guid: 8cae32ea985d4c84f988ff7958f4163b, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783596371389396226, guid: 8cae32ea985d4c84f988ff7958f4163b, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2980396369968391998, guid: 8cae32ea985d4c84f988ff7958f4163b, type: 3}
       propertyPath: m_Name
       value: GameUI
@@ -1022,6 +1038,22 @@ PrefabInstance:
     - target: {fileID: 4061045838383088379, guid: 8cae32ea985d4c84f988ff7958f4163b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5868613954377252834, guid: 8cae32ea985d4c84f988ff7958f4163b, type: 3}
+      propertyPath: m_fontColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5868613954377252834, guid: 8cae32ea985d4c84f988ff7958f4163b, type: 3}
+      propertyPath: m_fontColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5868613954377252834, guid: 8cae32ea985d4c84f988ff7958f4163b, type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5868613954377252834, guid: 8cae32ea985d4c84f988ff7958f4163b, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
