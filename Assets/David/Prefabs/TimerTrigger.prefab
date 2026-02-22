@@ -49,6 +49,9 @@ MonoBehaviour:
   fireColor2: {r: 1, g: 0, b: 0, a: 1}
   ropeRect: {fileID: 0}
   fireRect: {fileID: 0}
+  nextSceneName: Ending_Level
+  player1Chest: {fileID: 0}
+  player2Chest: {fileID: 0}
   OnTimerEndEvent:
     m_PersistentCalls:
       m_Calls:

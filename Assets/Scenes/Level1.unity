@@ -1395,10 +1395,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 471099629}
     - target: {fileID: 7114430027713177439, guid: c763f3ee6f3d5424e9277eb5d3186ed4, type: 3}
-      propertyPath: nextSceneName
-      value: Ending_Level
-      objectReference: {fileID: 0}
-    - target: {fileID: 7114430027713177439, guid: c763f3ee6f3d5424e9277eb5d3186ed4, type: 3}
       propertyPath: OnTimerEndEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1990296589}

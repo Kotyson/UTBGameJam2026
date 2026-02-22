@@ -52,7 +52,7 @@ public class RopeTimer : MonoBehaviour
         fireRect.position = leftEdgeCenter;
 
         // 3. Efekty ohně
-        float pulse = 0.3f + Mathf.Sin(Time.time * 15f) * 0.05f;
+        float pulse = 0.6f + Mathf.Sin(Time.time * 15f) * 0.05f;
         fireRect.localScale = new Vector3(pulse, pulse, 1);
 
         if (timeLeft <= 0) OnTimerEnd();
