@@ -124,7 +124,7 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 256
-  knockbackForce: 75
+  knockbackForce: 20
   pickupThrowKey: 101
   pickupRadius: 0.7
   itemLayer:
@@ -141,6 +141,7 @@ MonoBehaviour:
   animator: {fileID: 3607404917785194010}
   characterVisual: {fileID: 5121388440696200025}
   spawnPoint: {fileID: 0}
+  stunTime: 2
   holdPoint: {fileID: 24378283643405892}
   throwForce: 7
   heldItem: {fileID: 0}
@@ -186,7 +187,7 @@ Transform:
   m_GameObject: {fileID: 3141634165056097338}
   serializedVersion: 2
   m_LocalRotation: {x: 0.50154704, y: 0.24162818, z: -0.38771152, w: 0.7346742}
-  m_LocalPosition: {x: 0, y: 2.88, z: 0}
+  m_LocalPosition: {x: -0.101, y: 0.61, z: 0.931}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -203,7 +204,7 @@ Light:
   serializedVersion: 12
   m_Type: 2
   m_Color: {r: 1, g: 0.89959604, b: 0.8066038, a: 1}
-  m_Intensity: 55.1
+  m_Intensity: 55
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
