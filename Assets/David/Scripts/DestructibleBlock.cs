@@ -79,14 +79,14 @@ public class DestructibleBlock : MonoBehaviour
     {
         if (blockData == null || blockData.dropTable == null)
         {
-            Debug.LogWarning($"Blok '{gameObject.name}' nemá pøiøazený DropTable!");
+            Debug.LogWarning($"Blok '{gameObject.name}' nemï¿½ pï¿½iï¿½azenï¿½ DropTable!");
             return;
         }
 
         DropTable table = blockData.dropTable;
 
-        // --- PENÍZE: pøièteme hráèi do kapsy ---
-        // Najdeme nejbližšího hráèe v okolí (ten kdo tìžil)
+        // --- PENï¿½ZE: pï¿½iï¿½teme hrï¿½ï¿½i do kapsy ---
+        // Najdeme nejbliï¿½ï¿½ï¿½ho hrï¿½ï¿½e v okolï¿½ (ten kdo tï¿½il)
         PlayerController nearestPlayer = FindNearestPlayer();
         if (nearestPlayer != null)
         {
@@ -95,23 +95,23 @@ public class DestructibleBlock : MonoBehaviour
         }
 
         // --- GEM ---
-        GemData gem = table.RollGem();
+        GameObject gem = table.RollGem();
         if (gem == null)
         {
-            Debug.Log("Žádný gem nevypadl.");
+            Debug.Log("ï¿½ï¿½dnï¿½ gem nevypadl.");
             return;
         }
 
-        if (gem.prefab == null)
-        {
-            Debug.LogError($"Gem '{gem.gemName}' nemá pøiøazený prefab!");
-            return;
-        }
+        // if (gem.prefab == null)
+        // {
+        //     Debug.LogError($"Gem '{gem.gemName}' nemï¿½ pï¿½iï¿½azenï¿½ prefab!");
+        //     return;
+        // }
 
         Vector3 spawnPos = transform.position + Vector3.up * 0.5f;
-        GameObject spawned = Instantiate(gem.prefab, spawnPos, Quaternion.identity);
+        GameObject spawned = Instantiate(gem, spawnPos, Quaternion.identity);
         spawned.transform.SetParent(null);
-        Debug.Log($"Gem spawnut: '{gem.gemName}' na {spawned.transform.position}");
+        Debug.Log($"Gem spawnut: '{gem.name}' na {spawned.transform.position}");
     }
 
     private PlayerController FindNearestPlayer()

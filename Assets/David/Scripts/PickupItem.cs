@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PickupItem : MonoBehaviour, IInteractable
 {
+    public GemData gem;
     private Rigidbody rb;
     private Collider col;
     
@@ -49,29 +50,32 @@ public class PickupItem : MonoBehaviour, IInteractable
 
     private void OnCollisionEnter(Collision collision)
     {
-        // Only trigger if we are currently a flying projectile
         if (!isProjectile) return;
 
-        // Did we hit a player?
-        PlayerController hitPlayer = collision.gameObject.GetComponent<PlayerController>();
-
-        if (hitPlayer != null)
+        // 1. Check for Player
+        if (collision.gameObject.TryGetComponent<PlayerController>(out PlayerController hitPlayer))
         {
-            // Don't stun the person who threw it!
             if (collision.gameObject != thrower)
             {
-                hitPlayer.Stun(); // Call your existing stun function
-                Debug.Log(hitPlayer.name + " was stunned by " + gameObject.name);
-                
-                // End projectile state on hit
+                hitPlayer.Stun();
                 isProjectile = false; 
             }
         }
+        // 2. Check for Chest
+        else if (collision.gameObject.TryGetComponent<Chest>(out Chest hitChest))
+        {
+            Debug.Log("Hit a chest! Maybe deposit item or play a 'clink' sound.");
+        
+            // Example: If you want the item to automatically enter the chest on hit
+            hitChest.DepositItem(this); 
+        
+            isProjectile = false;
+        }
+        // 3. Hit anything else (Walls, Floor)
         else
         {
-            // If we hit a wall or floor, it's no longer a "dangerous" projectile
-            // We use a small delay or check velocity so it doesn't stun after bouncing
-            if (rb.velocity.magnitude < 2f) 
+            // Use rb.linearVelocity for Unity 2023+ or rb.velocity for older versions
+            if (rb.linearVelocity.magnitude < 2f) 
             {
                 isProjectile = false;
             }

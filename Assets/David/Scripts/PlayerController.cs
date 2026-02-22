@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask interactLayer;
 
     [Header("Money")]
-    private int carriedMoney = 0;
+    public int carriedMoney = 0;
 
     [Header("Status")]
     [SerializeField] private bool isDead = false;
@@ -96,6 +96,11 @@ public class PlayerController : MonoBehaviour
         HandleFootsteps();
     }
 
+    public void AddMoney(int value)
+    {
+        carriedMoney += value;
+    }
+    
     private void FixedUpdate()
     {
         Move(currentInputDirection);

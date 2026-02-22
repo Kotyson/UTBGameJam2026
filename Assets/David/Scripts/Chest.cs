@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class Chest : MonoBehaviour, IInteractable
 {
-    private static int totalPoints = 0;
+    public int totalPoints = 0;
     [SerializeField] private PlayerController owner;
 
     public void DepositItem(PickupItem item)
     {
-        int value = 10; // TODO - add real value
+        int value = item.gem.value; // TODO - add real value
         totalPoints += value;
         Debug.Log($"[Chest] Predmet vlozen! +{value} bode | Celkem: {totalPoints}");
         Destroy(item.gameObject);
@@ -27,6 +27,8 @@ public class Chest : MonoBehaviour, IInteractable
             return;
         }
         Debug.Log("Owner is interacting");
+        DepositMoney(owner.carriedMoney);
+        owner.carriedMoney = 0;
         if (owner.heldItem != null)
         {
             DepositItem(owner.heldItem);
