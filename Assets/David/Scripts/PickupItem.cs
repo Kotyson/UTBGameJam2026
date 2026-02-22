@@ -68,7 +68,7 @@ public class PickupItem : MonoBehaviour, IInteractable
         
             // Example: If you want the item to automatically enter the chest on hit
             hitChest.DepositItem(this); 
-        
+            GameManager.Instance.RefreshUI();
             isProjectile = false;
         }
         // 3. Hit anything else (Walls, Floor)

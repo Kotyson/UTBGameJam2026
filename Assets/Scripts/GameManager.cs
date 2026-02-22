@@ -9,10 +9,33 @@ public class GameManager : MonoBehaviour
     public Chest minecartP1;
     public Chest minecartP2;
     
+    public gameUI ui;
+    
     [Header("Timings")]
     public float deathDelay = 2f;    // Time spent "dead" before appearing at spawn
     public float spawnDuration = 2f; // Time spent "pulsing" before player can move
 
+    public static GameManager Instance;
+    private void Awake() { Instance = this; }
+    
+    void Start()
+    {
+        RefreshUI();
+    }
+
+    // Call this whenever money is added or deposited
+    public void RefreshUI()
+    {
+        if (ui == null) return;
+
+        ui.UpdateUI(
+            player1.carriedMoney, 
+            player2.carriedMoney, 
+            minecartP1.totalPoints, // Ensure 'totalMoney' is public in your Chest script
+            minecartP2.totalPoints
+        );
+    }
+    
     // Called via UnityEvent or directly from PlayerController
     public void OnPlayerDeath(PlayerController player)
     {
