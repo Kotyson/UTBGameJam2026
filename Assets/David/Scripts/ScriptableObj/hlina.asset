@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: hlina
   m_EditorClassIdentifier: Assembly-CSharp::BlockData
   blockName: hlina
-  maxHealth: 10
+  maxHealth: 5
   dropTable: {fileID: 11400000, guid: 19800d25cf95afa43bfcb73f247b6f33, type: 2}
