@@ -239,6 +239,7 @@ MonoBehaviour:
   moveForce: 125
   maxSpeed: 8
   rotationSpeed: 10
+  footstepDelay: 0.5
   sphereRadius: 0.14
   attackDistance: 0.5
   attackDamage: 1
@@ -252,16 +253,24 @@ MonoBehaviour:
     m_Bits: 256
   knockbackForce: 50
   pickupThrowKey: 305
-  holdPoint: {fileID: 250851125568471669}
   pickupRadius: 0.7
   itemLayer:
     serializedVersion: 2
     m_Bits: 64
   pickaxeVisual: {fileID: 8759841431520297879}
+  interactDistance: 1.5
+  interactRadius: 0.5
+  interactLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  carriedMoney: 0
   isDead: 0
   animator: {fileID: 4215431140763522975}
   characterVisual: {fileID: 6192859088535576263}
   spawnPoint: {fileID: 0}
+  holdPoint: {fileID: 250851125568471669}
+  throwForce: 7
+  heldItem: {fileID: 0}
   onDeath:
     m_PersistentCalls:
       m_Calls:
@@ -371,11 +380,11 @@ PrefabInstance:
     - target: {fileID: -7447994946373016569, guid: 3f89d0de7dbc0b442889189a68a387ee, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 1b892b0f6e4fb6a40a1003b6070206b1, type: 2}
+      objectReference: {fileID: 2100000, guid: f376159f7f7973647bd0807a5028ef77, type: 2}
     - target: {fileID: -6731255527716785631, guid: 3f89d0de7dbc0b442889189a68a387ee, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 1b892b0f6e4fb6a40a1003b6070206b1, type: 2}
+      objectReference: {fileID: 2100000, guid: f376159f7f7973647bd0807a5028ef77, type: 2}
     - target: {fileID: -6625718937604763523, guid: 3f89d0de7dbc0b442889189a68a387ee, type: 3}
       propertyPath: m_Layer
       value: 8
@@ -427,7 +436,7 @@ PrefabInstance:
     - target: {fileID: -2085030486484452038, guid: 3f89d0de7dbc0b442889189a68a387ee, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 1b892b0f6e4fb6a40a1003b6070206b1, type: 2}
+      objectReference: {fileID: 2100000, guid: f376159f7f7973647bd0807a5028ef77, type: 2}
     - target: {fileID: -1848516387889089045, guid: 3f89d0de7dbc0b442889189a68a387ee, type: 3}
       propertyPath: m_Layer
       value: 8
@@ -467,7 +476,7 @@ PrefabInstance:
     - target: {fileID: 5326949848089178842, guid: 3f89d0de7dbc0b442889189a68a387ee, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 1b892b0f6e4fb6a40a1003b6070206b1, type: 2}
+      objectReference: {fileID: 2100000, guid: f376159f7f7973647bd0807a5028ef77, type: 2}
     - target: {fileID: 5866666021909216657, guid: 3f89d0de7dbc0b442889189a68a387ee, type: 3}
       propertyPath: m_Controller
       value: 

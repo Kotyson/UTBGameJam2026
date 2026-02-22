@@ -65,7 +65,7 @@ MonoBehaviour:
     clip:
     - {fileID: 8300000, guid: 2b3adeddeefd93c4db1d077cb8665425, type: 3}
     volume: 0.2
-    pitch: 0
+    pitch: 0.1
     loop: 1
     source: {fileID: 0}
   - name: Mining
