@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 383aa811fee1b93488d8669fa7e479a4, type: 3}
-  m_Name: level1
+  m_Name: level tut
   m_EditorClassIdentifier: Assembly-CSharp::LevelDataSO
   availableTileSets:
   - name: cave
@@ -82,34 +82,6 @@ MonoBehaviour:
     typeIndex: 2
   - position: {x: 0, y: 0, z: 3}
     typeIndex: 2
-  - position: {x: 0, y: 0, z: 4}
-    typeIndex: 2
-  - position: {x: 1, y: 0, z: 4}
-    typeIndex: 2
-  - position: {x: 2, y: 0, z: 4}
-    typeIndex: 2
-  - position: {x: 3, y: 0, z: 4}
-    typeIndex: 2
-  - position: {x: 4, y: 0, z: 4}
-    typeIndex: 2
-  - position: {x: 6, y: 0, z: 4}
-    typeIndex: 2
-  - position: {x: 5, y: 0, z: 4}
-    typeIndex: 2
-  - position: {x: 7, y: 0, z: 4}
-    typeIndex: 2
-  - position: {x: 8, y: 0, z: 4}
-    typeIndex: 2
-  - position: {x: 9, y: 0, z: 4}
-    typeIndex: 2
-  - position: {x: 10, y: 0, z: 4}
-    typeIndex: 2
-  - position: {x: 11, y: 0, z: 4}
-    typeIndex: 2
-  - position: {x: 12, y: 0, z: 4}
-    typeIndex: 2
-  - position: {x: 13, y: 0, z: 4}
-    typeIndex: 2
   - position: {x: 13, y: 0, z: -8}
     typeIndex: 2
   - position: {x: 0, y: 0, z: -4}
@@ -158,168 +130,6 @@ MonoBehaviour:
     typeIndex: 2
   - position: {x: 14, y: 0, z: -8}
     typeIndex: 2
-  - position: {x: 1, y: 0, z: -3}
-    typeIndex: 0
-  - position: {x: 2, y: 0, z: -3}
-    typeIndex: 0
-  - position: {x: 3, y: 0, z: -3}
-    typeIndex: 0
-  - position: {x: 4, y: 0, z: -3}
-    typeIndex: 0
-  - position: {x: 5, y: 0, z: -3}
-    typeIndex: 0
-  - position: {x: 6, y: 0, z: -3}
-    typeIndex: 0
-  - position: {x: 7, y: 0, z: -3}
-    typeIndex: 0
-  - position: {x: 8, y: 0, z: -3}
-    typeIndex: 0
-  - position: {x: 9, y: 0, z: -3}
-    typeIndex: 0
-  - position: {x: 10, y: 0, z: -3}
-    typeIndex: 0
-  - position: {x: 11, y: 0, z: -3}
-    typeIndex: 0
-  - position: {x: 12, y: 0, z: -3}
-    typeIndex: 0
-  - position: {x: 13, y: 0, z: -3}
-    typeIndex: 0
-  - position: {x: 1, y: 0, z: -2}
-    typeIndex: 0
-  - position: {x: 2, y: 0, z: -2}
-    typeIndex: 0
-  - position: {x: 1, y: 0, z: -1}
-    typeIndex: 0
-  - position: {x: 1, y: 0, z: 0}
-    typeIndex: 0
-  - position: {x: 1, y: 0, z: 3}
-    typeIndex: 0
-  - position: {x: 2, y: 0, z: 3}
-    typeIndex: 0
-  - position: {x: 3, y: 0, z: 3}
-    typeIndex: 0
-  - position: {x: 4, y: 0, z: 3}
-    typeIndex: 0
-  - position: {x: 5, y: 0, z: 3}
-    typeIndex: 0
-  - position: {x: 6, y: 0, z: 3}
-    typeIndex: 0
-  - position: {x: 7, y: 0, z: 3}
-    typeIndex: 0
-  - position: {x: 8, y: 0, z: 3}
-    typeIndex: 0
-  - position: {x: 9, y: 0, z: 3}
-    typeIndex: 0
-  - position: {x: 10, y: 0, z: 3}
-    typeIndex: 0
-  - position: {x: 11, y: 0, z: 3}
-    typeIndex: 0
-  - position: {x: 12, y: 0, z: 3}
-    typeIndex: 0
-  - position: {x: 13, y: 0, z: 3}
-    typeIndex: 0
-  - position: {x: 13, y: 0, z: 2}
-    typeIndex: 0
-  - position: {x: 13, y: 0, z: 1}
-    typeIndex: 0
-  - position: {x: 13, y: 0, z: 0}
-    typeIndex: 0
-  - position: {x: 13, y: 0, z: -1}
-    typeIndex: 0
-  - position: {x: 11, y: 0, z: 2}
-    typeIndex: 0
-  - position: {x: 9, y: 0, z: 2}
-    typeIndex: 0
-  - position: {x: 4, y: 0, z: 2}
-    typeIndex: 0
-  - position: {x: 3, y: 0, z: 2}
-    typeIndex: 0
-  - position: {x: 1, y: 0, z: 2}
-    typeIndex: 0
-  - position: {x: 1, y: 0, z: 1}
-    typeIndex: 0
-  - position: {x: 4, y: 0, z: 1}
-    typeIndex: 0
-  - position: {x: 3, y: 0, z: 1}
-    typeIndex: 0
-  - position: {x: 2, y: 0, z: 0}
-    typeIndex: 0
-  - position: {x: 2, y: 0, z: -1}
-    typeIndex: 0
-  - position: {x: 3, y: 0, z: 0}
-    typeIndex: 0
-  - position: {x: 3, y: 0, z: -1}
-    typeIndex: 0
-  - position: {x: 3, y: 0, z: -2}
-    typeIndex: 0
-  - position: {x: 4, y: 0, z: 0}
-    typeIndex: 0
-  - position: {x: 4, y: 0, z: -1}
-    typeIndex: 0
-  - position: {x: 4, y: 0, z: -2}
-    typeIndex: 0
-  - position: {x: 5, y: 0, z: -2}
-    typeIndex: 0
-  - position: {x: 9, y: 0, z: 1}
-    typeIndex: 0
-  - position: {x: 10, y: 0, z: 1}
-    typeIndex: 0
-  - position: {x: 10, y: 0, z: 2}
-    typeIndex: 0
-  - position: {x: 11, y: 0, z: 0}
-    typeIndex: 0
-  - position: {x: 11, y: 0, z: 1}
-    typeIndex: 0
-  - position: {x: 10, y: 0, z: 0}
-    typeIndex: 0
-  - position: {x: 9, y: 0, z: 0}
-    typeIndex: 0
-  - position: {x: 7, y: 0, z: 0}
-    typeIndex: 0
-  - position: {x: 6, y: 0, z: 0}
-    typeIndex: 0
-  - position: {x: 12, y: 0, z: 0}
-    typeIndex: 0
-  - position: {x: 12, y: 0, z: -1}
-    typeIndex: 0
-  - position: {x: 12, y: 0, z: -2}
-    typeIndex: 0
-  - position: {x: 13, y: 0, z: -2}
-    typeIndex: 0
-  - position: {x: 6, y: 0, z: -1}
-    typeIndex: 0
-  - position: {x: 7, y: 0, z: -1}
-    typeIndex: 0
-  - position: {x: 10, y: 0, z: -1}
-    typeIndex: 0
-  - position: {x: 11, y: 0, z: -1}
-    typeIndex: 0
-  - position: {x: 9, y: 0, z: -1}
-    typeIndex: 0
-  - position: {x: 9, y: 0, z: -2}
-    typeIndex: 0
-  - position: {x: 11, y: 0, z: -2}
-    typeIndex: 0
-  - position: {x: 10, y: 0, z: -2}
-    typeIndex: 0
-  - position: {x: 7, y: 0, z: -2}
-    typeIndex: 0
-  - position: {x: 6, y: 0, z: -2}
-    typeIndex: 0
-  - position: {x: 8, y: 0, z: -2}
-    typeIndex: 0
-  - position: {x: 1, y: 0, z: -4}
-    typeIndex: 0
-  - position: {x: 1, y: 0, z: -5}
-    typeIndex: 0
-  - position: {x: 2, y: 0, z: -4}
-    typeIndex: 0
-  - position: {x: 12, y: 0, z: -4}
-    typeIndex: 0
-  - position: {x: 13, y: 0, z: -4}
-    typeIndex: 0
-  - position: {x: 13, y: 0, z: -5}
-    typeIndex: 0
   - position: {x: 3, y: 0, z: -9}
     typeIndex: 2
   - position: {x: 3, y: 0, z: -10}
@@ -548,10 +358,6 @@ MonoBehaviour:
     typeIndex: 2
   - position: {x: 18, y: 0, z: -10}
     typeIndex: 2
-  - position: {x: 6, y: 0, z: 2}
-    typeIndex: 0
-  - position: {x: 7, y: 0, z: 2}
-    typeIndex: 0
   - position: {x: 11, y: 0, z: -10}
     typeIndex: 2
   - position: {x: 3, y: 0, z: -11}
@@ -576,3 +382,61 @@ MonoBehaviour:
     typeIndex: 2
   - position: {x: 11, y: 0, z: -11}
     typeIndex: 2
+  - position: {x: 0, y: 0, z: 4}
+    typeIndex: 2
+  - position: {x: 0, y: 0, z: 5}
+    typeIndex: 2
+  - position: {x: 0, y: 0, z: 6}
+    typeIndex: 2
+  - position: {x: 0, y: 0, z: 7}
+    typeIndex: 2
+  - position: {x: 0, y: 0, z: 8}
+    typeIndex: 2
+  - position: {x: 0, y: 0, z: 9}
+    typeIndex: 2
+  - position: {x: 0, y: 0, z: 10}
+    typeIndex: 2
+  - position: {x: -1, y: 0, z: 10}
+    typeIndex: 2
+  - position: {x: 0, y: 0, z: 11}
+    typeIndex: 2
+  - position: {x: 1, y: 0, z: 11}
+    typeIndex: 2
+  - position: {x: 2, y: 0, z: 11}
+    typeIndex: 2
+  - position: {x: 3, y: 0, z: 11}
+    typeIndex: 2
+  - position: {x: 4, y: 0, z: 11}
+    typeIndex: 2
+  - position: {x: 5, y: 0, z: 11}
+    typeIndex: 2
+  - position: {x: 6, y: 0, z: 11}
+    typeIndex: 2
+  - position: {x: 7, y: 0, z: 11}
+    typeIndex: 2
+  - position: {x: 8, y: 0, z: 11}
+    typeIndex: 2
+  - position: {x: 9, y: 0, z: 11}
+    typeIndex: 2
+  - position: {x: 10, y: 0, z: 11}
+    typeIndex: 2
+  - position: {x: 11, y: 0, z: 11}
+    typeIndex: 2
+  - position: {x: 12, y: 0, z: 11}
+    typeIndex: 2
+  - position: {x: 13, y: 0, z: 11}
+    typeIndex: 2
+  - position: {x: 14, y: 0, z: 5}
+    typeIndex: 2
+  - position: {x: 14, y: 0, z: 6}
+    typeIndex: 2
+  - position: {x: 14, y: 0, z: 7}
+    typeIndex: 2
+  - position: {x: 14, y: 0, z: 8}
+    typeIndex: 2
+  - position: {x: 14, y: 0, z: 9}
+    typeIndex: 2
+  - position: {x: 5, y: 0, z: -3}
+    typeIndex: 0
+  - position: {x: 9, y: 0, z: -3}
+    typeIndex: 0

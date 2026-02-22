@@ -153,6 +153,8 @@ MonoBehaviour:
   bubble3: {fileID: 420567724}
   fadeDuration: 1
   delayBetween: 3
+  waitAfterLastBubble: 5
+  nextSceneName: Level Tut
 --- !u!4 &25853842
 Transform:
   m_ObjectHideFlags: 0

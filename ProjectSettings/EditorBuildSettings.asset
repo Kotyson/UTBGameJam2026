@@ -12,8 +12,17 @@ EditorBuildSettings:
     path: Assets/Scenes/Menu.unity
     guid: 08f562d67b130564cbe4d2f89525d108
   - enabled: 1
+    path: Assets/Scenes/Comic.unity
+    guid: d9ab5265aeb19ac469e3418552554e56
+  - enabled: 1
+    path: Assets/Scenes/Level Tut.unity
+    guid: 179fbcc0291a45a4b8522d1bcd728100
+  - enabled: 1
     path: Assets/Scenes/Level1.unity
     guid: 99a91206b4bcde146b7374a66264f488
+  - enabled: 1
+    path: Assets/Scenes/Ending_Level.unity
+    guid: b39b1d8f09392f64a80504e09f7e1cb0
   - enabled: 1
     path: Assets/Scenes/Level2.unity
     guid: 37975d9f8bfa7744a91330469e47d69c
