@@ -65,6 +65,8 @@ public class RopeTimer : MonoBehaviour
 
         // --- NOVÁ LOGIKA PRO PŘEPNUTÍ ---
 
+        LevelData.LastSceneName = SceneManager.GetActiveScene().name;
+
         // 1. Uložíme body do statické třídy LevelData
         if (player1Chest != null) LevelData.Player1Score = player1Chest.totalPoints;
         if (player2Chest != null) LevelData.Player2Score = player2Chest.totalPoints;

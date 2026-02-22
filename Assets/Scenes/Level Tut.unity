@@ -612,10 +612,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Doneste co nejv\xEDce pen\u011Bz a miner\xE1l\u016F do sv\xE9ho voz\xEDku!"
+  m_text: "Z\xEDskejte co nejdra\u017E\u0161\xED obsah voz\xEDku"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a16c83f53cbbfe6458cb00f4433cfe34, type: 2}
+  m_sharedMaterial: {fileID: 4338979009886760056, guid: a16c83f53cbbfe6458cb00f4433cfe34, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -639,14 +639,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 6
-  m_fontSizeBase: 6
+  m_fontSize: 5
+  m_fontSizeBase: 5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -712,7 +712,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  - {fileID: 4338979009886760056, guid: a16c83f53cbbfe6458cb00f4433cfe34, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -744,7 +744,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 880742822}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 7.95}
+  m_LocalPosition: {x: 0, y: 0, z: 6.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -798,10 +798,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Pozor na padaj\xEDc\xED bloky"
+  m_text: "Pozor na padaj\xEDc\xED bloky!"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a16c83f53cbbfe6458cb00f4433cfe34, type: 2}
+  m_sharedMaterial: {fileID: 4338979009886760056, guid: a16c83f53cbbfe6458cb00f4433cfe34, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -825,14 +825,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 6
-  m_fontSizeBase: 6
+  m_fontSize: 5
+  m_fontSizeBase: 5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -898,7 +898,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  - {fileID: 4338979009886760056, guid: a16c83f53cbbfe6458cb00f4433cfe34, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1273,11 +1273,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Z blok\u016F n\u011Bkdy vypadne n\u011Bco nav\xEDc, zkuste vz\xEDt a trefit
-    se "
+  m_text: "Miner\xE1ly lze nosit, h\xE1zet a pokl\xE1dat\nkl\xE1vesa E  |  kl\xE1vesa
+    L"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a16c83f53cbbfe6458cb00f4433cfe34, type: 2}
+  m_sharedMaterial: {fileID: 4338979009886760056, guid: a16c83f53cbbfe6458cb00f4433cfe34, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1301,14 +1301,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 6
-  m_fontSizeBase: 6
+  m_fontSize: 5
+  m_fontSizeBase: 5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -1374,7 +1374,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  - {fileID: 4338979009886760056, guid: a16c83f53cbbfe6458cb00f4433cfe34, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1543,10 +1543,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Nasb\xEDrejte co nejv\xEDc pen\u011Bz"
+  m_text: "Rozb\xEDjejte kameny\nmezern\xEDk  |  kl\xE1vesa K"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a16c83f53cbbfe6458cb00f4433cfe34, type: 2}
+  m_sharedMaterial: {fileID: 4338979009886760056, guid: a16c83f53cbbfe6458cb00f4433cfe34, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1570,14 +1570,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 6
-  m_fontSizeBase: 6
+  m_fontSize: 5
+  m_fontSizeBase: 5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -1643,7 +1643,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  - {fileID: 4338979009886760056, guid: a16c83f53cbbfe6458cb00f4433cfe34, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1782,6 +1782,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1213385802710371157, guid: 8cae32ea985d4c84f988ff7958f4163b, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 1213385802710371157, guid: 8cae32ea985d4c84f988ff7958f4163b, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 1213385802710371157, guid: 8cae32ea985d4c84f988ff7958f4163b, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2394507256170843454, guid: 8cae32ea985d4c84f988ff7958f4163b, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 2394507256170843454, guid: 8cae32ea985d4c84f988ff7958f4163b, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 2394507256170843454, guid: 8cae32ea985d4c84f988ff7958f4163b, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2980396369968391998, guid: 8cae32ea985d4c84f988ff7958f4163b, type: 3}
       propertyPath: m_Name
       value: GameUI
@@ -1864,6 +1888,30 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4061045838383088379, guid: 8cae32ea985d4c84f988ff7958f4163b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5802756649688931975, guid: 8cae32ea985d4c84f988ff7958f4163b, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: a16c83f53cbbfe6458cb00f4433cfe34, type: 2}
+    - target: {fileID: 5802756649688931975, guid: 8cae32ea985d4c84f988ff7958f4163b, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 4338979009886760056, guid: a16c83f53cbbfe6458cb00f4433cfe34, type: 2}
+    - target: {fileID: 5802756649688931975, guid: 8cae32ea985d4c84f988ff7958f4163b, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5868613954377252834, guid: 8cae32ea985d4c84f988ff7958f4163b, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: a16c83f53cbbfe6458cb00f4433cfe34, type: 2}
+    - target: {fileID: 5868613954377252834, guid: 8cae32ea985d4c84f988ff7958f4163b, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 4338979009886760056, guid: a16c83f53cbbfe6458cb00f4433cfe34, type: 2}
+    - target: {fileID: 5868613954377252834, guid: 8cae32ea985d4c84f988ff7958f4163b, type: 3}
+      propertyPath: m_hasFontAssetChanged
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2154,6 +2202,22 @@ PrefabInstance:
       propertyPath: ropeRect
       value: 
       objectReference: {fileID: 694448924}
+    - target: {fileID: 7114430027713177439, guid: c763f3ee6f3d5424e9277eb5d3186ed4, type: 3}
+      propertyPath: totalTime
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 7114430027713177439, guid: c763f3ee6f3d5424e9277eb5d3186ed4, type: 3}
+      propertyPath: player1Chest
+      value: 
+      objectReference: {fileID: 297703423}
+    - target: {fileID: 7114430027713177439, guid: c763f3ee6f3d5424e9277eb5d3186ed4, type: 3}
+      propertyPath: player2Chest
+      value: 
+      objectReference: {fileID: 471099629}
+    - target: {fileID: 7114430027713177439, guid: c763f3ee6f3d5424e9277eb5d3186ed4, type: 3}
+      propertyPath: nextSceneName
+      value: Level1
+      objectReference: {fileID: 0}
     - target: {fileID: 7114430027713177439, guid: c763f3ee6f3d5424e9277eb5d3186ed4, type: 3}
       propertyPath: OnTimerEndEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

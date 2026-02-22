@@ -3,18 +3,32 @@ using UnityEngine.SceneManagement;
 
 public class NextLevelLoader : MonoBehaviour
 {
-    [Header("Nastavení")]
-    public string nextLevelName; // Název scény dalšího levelu (napø. "Level2")
-
     public void LoadNextLevel()
     {
-        // 1. VYRESETUJEME SKÓRE ve statické tøídì
-        LevelData.Player1Score = 0;
-        LevelData.Player2Score = 0;
+        // 1. Resetujeme body
+      //  LevelData.Player1Score = 0;
+       // LevelData.Player2Score = 0;
 
-        Debug.Log("Skóre vyresetováno. Naèítám další level...");
+        // 2. Rozhodneme, kam jít dál
+        string sceneToLoad = "";
 
-        // 2. Naèteme další level
-        SceneManager.LoadScene(nextLevelName);
+        switch (LevelData.LastSceneName)
+        {
+            case "Level1":
+                sceneToLoad = "Level2";
+                break;
+            case "Level2":
+                sceneToLoad = "Level3";
+                break;
+            case "Level3":
+                sceneToLoad = "Menu"; // Po levelu 3 jdeme do menu
+                break;
+            default:
+                sceneToLoad = "Menu"; // Pojistka
+                break;
+        }
+
+        Debug.Log($"Pøišli jsme z {LevelData.LastSceneName}, pokraèujeme do {sceneToLoad}");
+        SceneManager.LoadScene(sceneToLoad);
     }
 }
