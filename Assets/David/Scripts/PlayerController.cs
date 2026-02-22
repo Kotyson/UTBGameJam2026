@@ -34,13 +34,17 @@ public class PlayerController : MonoBehaviour
 
     [Header("Item Settings")]
     [SerializeField] private KeyCode pickupThrowKey = KeyCode.E;
-    [SerializeField] private Transform holdPoint;
     [SerializeField] private float pickupRadius = 1.5f;
     [SerializeField] private LayerMask itemLayer;
     [SerializeField] private GameObject pickaxeVisual;
+    
+    [Header("Interaction Settings")]
+    public float interactDistance = 1.5f;
+    public float interactRadius = 0.5f;
+    public LayerMask interactLayer;
 
     [Header("Money")]
-    private int carriedMoney = 0;
+    public int carriedMoney = 0;
 
     [Header("Status")]
     [SerializeField] private bool isDead = false;
@@ -53,8 +57,11 @@ public class PlayerController : MonoBehaviour
 
     private float nextAttackTime;
     private Rigidbody rb;
-    private PickupItem heldItem;
-    private Chest nearbyChest;
+    
+    [Header("Throw Settings")]
+    public Transform holdPoint;
+    public float throwForce = 10f;
+    public PickupItem heldItem;
 
     [Header("Events")] public UnityEvent onDeath;
 
@@ -89,6 +96,11 @@ public class PlayerController : MonoBehaviour
         HandleFootsteps();
     }
 
+    public void AddMoney(int value)
+    {
+        carriedMoney += value;
+    }
+    
     private void FixedUpdate()
     {
         Move(currentInputDirection);
@@ -115,76 +127,107 @@ public class PlayerController : MonoBehaviour
             footstepTimer = 0;
         }
     }
-
+    
     private void HandleItemInput()
     {
         if (!Input.GetKeyDown(pickupThrowKey)) return;
-
+        
+        // 1. If we are holding something and NOT looking at an interactable, we throw it
         if (heldItem != null)
         {
-            if (nearbyChest != null)
+            // Try to find a chest/container first
+            IInteractable target = GetNearestInteractable();
+        
+            if (target != null && target is Chest) // Special case if you want to prioritize depositing
             {
-                nearbyChest.DepositItem(heldItem);
-                heldItem = null;
+                target.Interact(this);
             }
             else
             {
-                AudioManager.Instance.Play("Rock_Throw");
-                Vector3 throwDir = new Vector3(transform.forward.x, 0f, transform.forward.z).normalized;
-                heldItem.Drop(throwDir, this);
-                heldItem = null;
+                ThrowItem();
             }
-
-            if (pickaxeVisual != null)
-                pickaxeVisual.SetActive(true);
         }
+        // 2. If we are empty-handed, we look for the nearest interactable (Item, Chest, Lever, etc.)
         else
         {
-            // Pokud je hráè u chestky a nese peníze, odevzdá je
-            if (nearbyChest != null && carriedMoney > 0)
+            IInteractable target = GetNearestInteractable();
+            if (target != null)
             {
-                nearbyChest.DepositMoney(carriedMoney);
-                carriedMoney = 0;
-                Debug.Log("Peníze odevzdány do chestky.");
-                return;
+                Debug.Log("Interagujeme");
+                target.Interact(this);
             }
-
-            Collider[] hits = Physics.OverlapSphere(transform.position, pickupRadius, itemLayer);
-            if (hits.Length == 0) return;
-
-            Collider nearest = hits[0];
-            float minDist = float.MaxValue;
-            foreach (var h in hits)
-            {
-                float d = Vector3.Distance(transform.position, h.transform.position);
-                if (d < minDist) { minDist = d; nearest = h; }
-            }
-
-            PickupItem item = nearest.GetComponent<PickupItem>();
-            if (item == null) return;
-
-            heldItem = item;
-            heldItem.PickUp(holdPoint);
-
-            if (pickaxeVisual != null)
-                pickaxeVisual.SetActive(false);
         }
     }
 
-    // --- Money ---
-    public void AddMoney(int amount)
+    public void PickUpItem(PickupItem item)
     {
-        carriedMoney += amount;
-        Debug.Log($"[Player] Pøièteno {amount} penìz | Nese: {carriedMoney}");
+        heldItem = item;
+        heldItem.OnPickUp(holdPoint);
+    
+        // If you have a pickaxe visual, hide it while holding a rock
+        if (pickaxeVisual != null) pickaxeVisual.SetActive(false);
     }
 
-    public int GetCarriedMoney() => carriedMoney;
-
-    // --- Chest ---
-    public void SetNearChest(Chest chest)
+    private void ThrowItem()
     {
-        nearbyChest = chest;
+        AudioManager.Instance.Play("Rock_Throw");
+    
+        Vector3 throwDir = transform.forward;
+    
+        // Pass 'gameObject' as the 3rd argument (the thrower)
+        heldItem.OnThrow(throwDir, throwForce, gameObject); 
+    
+        heldItem = null;
+
+        if (pickaxeVisual != null) pickaxeVisual.SetActive(true);
     }
+    
+    private IInteractable GetNearestInteractable()
+    {
+        // Use your OverlapSphere approach to find everything nearby
+        Collider[] hits = Physics.OverlapSphere(transform.position, pickupRadius, interactLayer);
+    
+        IInteractable nearest = null;
+        float minDist = float.MaxValue;
+
+        foreach (var h in hits)
+        {
+            IInteractable interactable = h.GetComponentInParent<IInteractable>();
+            Debug.Log("Interactable" + interactable == null);
+            if (interactable == null) continue;
+
+            float d = Vector3.Distance(transform.position, h.transform.position);
+            if (d < minDist)
+            {
+                minDist = d;
+                nearest = interactable;
+            }
+        }
+        return nearest;
+    }
+    
+    
+    private void OnDrawGizmosSelected()
+    {
+        // Make sure these match your actual variables!
+        float interactRadius = this.interactRadius; 
+        float interactDistance = this.interactDistance;
+    
+        Vector3 origin = transform.position + transform.forward * -0.25f;
+        Vector3 direction = transform.forward;
+        origin.y -= 0.5f;
+        
+        Gizmos.color = Color.yellow;
+        // Draw the line of the cast
+        Gizmos.DrawRay(origin, direction * interactDistance);
+        // Draw the sphere at the end so you can see its size
+        Gizmos.DrawWireSphere(origin + direction * interactDistance, interactRadius);
+    }
+
+    // public void SetNearChest(Chest chest)
+    // {
+    //     nearbyChest = chest;
+    // }
 
     private bool isStunned = false;
 
@@ -306,20 +349,6 @@ public class PlayerController : MonoBehaviour
         float speed = horizontalVelocity.magnitude;
 
         animator.SetFloat("Speed", speed, 0.1f, Time.fixedDeltaTime);
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Vector3 origin = transform.position + transform.forward * -0.25f;
-        Vector3 end = origin + transform.forward * attackDistance;
-        Gizmos.DrawWireSphere(origin, sphereRadius);
-        Gizmos.DrawWireSphere(end, sphereRadius);
-        Gizmos.DrawLine(origin + Vector3.right * sphereRadius, end + Vector3.right * sphereRadius);
-        Gizmos.DrawLine(origin - Vector3.right * sphereRadius, end - Vector3.right * sphereRadius);
-
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, pickupRadius);
     }
 
     private void OnTriggerEnter(Collider other)

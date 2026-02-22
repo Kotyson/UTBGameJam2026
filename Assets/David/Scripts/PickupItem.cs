@@ -1,85 +1,84 @@
 using UnityEngine;
-using System.Collections;
-using System.Runtime.CompilerServices;
 
-public class PickupItem : MonoBehaviour
+public class PickupItem : MonoBehaviour, IInteractable
 {
-    [SerializeField] public int itemValue = 10;
-    [SerializeField] private float throwForce = 10f;
-
+    public GemData gem;
     private Rigidbody rb;
     private Collider col;
-    private float DestroyAfterCollisionCooldown = 3f;
-    private PlayerController thrownBy;
-    private bool canBePickedUp = true;
-
-    public bool IsThrown { get; private set; } = false;
     
-    private void Awake()
+    [Header("Projectile Settings")]
+    private bool isProjectile = false;
+    private GameObject thrower;
+
+    void Awake()
     {
         rb = GetComponent<Rigidbody>();
         col = GetComponent<Collider>();
-        // P�edm�t se neh�be dokud le�� na zemi
-        //Freeze();
     }
 
-    public void PickUp(Transform holdPoint)
+    public void Interact(PlayerController interactor)
     {
-        if (!canBePickedUp) return;
-        IsThrown = false;
-        thrownBy = null;
-        Freeze();
+        if (interactor != null && interactor.heldItem == null && !isProjectile) // Can't pick up mid-air
+        {
+            interactor.PickUpItem(this);
+        }
+    }
+
+    public void OnPickUp(Transform holdPoint)
+    {
+        isProjectile = false;
+        thrower = null;
+        rb.isKinematic = true;
         col.enabled = false;
         transform.SetParent(holdPoint);
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
-        //Dont allow picking up if the item is in cooldown of destroying after collision
-        
     }
 
-    public void Drop(Vector3 throwDirection, PlayerController thrower)
+    public void OnThrow(Vector3 direction, float force, GameObject owner)
     {
+        thrower = owner;
+        isProjectile = true;
+
         transform.SetParent(null);
-        IsThrown = true;
-        thrownBy = thrower;
-        Unfreeze();
+        rb.isKinematic = false;
         col.enabled = true;
-        rb.AddForce(throwDirection * throwForce, ForceMode.Impulse);
+
+        rb.AddForce(direction * force, ForceMode.Impulse);
+        rb.AddForce(Vector3.up * (force * 0.5f), ForceMode.Impulse);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!IsThrown) return;
+        if (!isProjectile) return;
 
-        // Ignoruj hr��e kter� hodil
-        PlayerController player = collision.collider.GetComponent<PlayerController>();
-        if (player != null && player == thrownBy) return;
-
-        // Trefil jin�ho hr��e � stun
-        if (player != null)
-            player.Stun();
+        // 1. Check for Player
+        if (collision.gameObject.TryGetComponent<PlayerController>(out PlayerController hitPlayer))
+        {
+            if (collision.gameObject != thrower)
+            {
+                hitPlayer.Stun();
+                isProjectile = false; 
+            }
+        }
+        // 2. Check for Chest
+        else if (collision.gameObject.TryGetComponent<Chest>(out Chest hitChest))
+        {
+            Debug.Log("Hit a chest! Maybe deposit item or play a 'clink' sound.");
         
-        // V�dy zni�it po dopadu (a� trefil kohokoliv nebo cokoliv)
-       // destroy after cooldown
-       StartCoroutine(DestroyAfterCooldown());
-
-    }
-    public IEnumerator DestroyAfterCooldown()
-    {
-        yield return new WaitForSeconds(DestroyAfterCollisionCooldown);
-        canBePickedUp = false;
-        Destroy(gameObject);
-    }
-
-    private void Freeze()
-    {
-        rb.isKinematic = true;
-        rb.linearVelocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
-    }
-
-    private void Unfreeze()
-    {
-        rb.isKinematic = false;
+            // Example: If you want the item to automatically enter the chest on hit
+            hitChest.DepositItem(this); 
+        
+            isProjectile = false;
+        }
+        // 3. Hit anything else (Walls, Floor)
+        else
+        {
+            // Use rb.linearVelocity for Unity 2023+ or rb.velocity for older versions
+            if (rb.linearVelocity.magnitude < 2f) 
+            {
+                isProjectile = false;
+            }
+        }
     }
 }

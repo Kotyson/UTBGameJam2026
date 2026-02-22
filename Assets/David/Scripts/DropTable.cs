@@ -3,24 +3,24 @@ using UnityEngine;
 [System.Serializable]
 public class GemDrop
 {
-    public GemData gem;
-    [Range(0f, 100f)] public float chance; // šance v procentech, napø. 10 = 10%
+    public GameObject gem;
+    [Range(0f, 100f)] public float chance; // ï¿½ance v procentech, napï¿½. 10 = 10%
 }
 
 [CreateAssetMenu(fileName = "New DropTable", menuName = "Loot/Drop Table")]
 public class DropTable : ScriptableObject
 {
-    [Header("Peníze")]
+    [Header("Penï¿½ze")]
     public int minMoney = 10;
     public int maxMoney = 50;
 
-    [Header("Gemy (každý má vlastní šanci)")]
+    [Header("Gemy (kaï¿½dï¿½ mï¿½ vlastnï¿½ ï¿½anci)")]
     public GemDrop[] gems;
 
     /// <summary>
-    /// Vrátí náhodný gem podle šancí, nebo null pokud žádný nevypadne.
+    /// Vrï¿½tï¿½ nï¿½hodnï¿½ gem podle ï¿½ancï¿½, nebo null pokud ï¿½ï¿½dnï¿½ nevypadne.
     /// </summary>
-    public GemData RollGem()
+    public GameObject RollGem()
     {
         if (gems == null || gems.Length == 0) return null;
 
