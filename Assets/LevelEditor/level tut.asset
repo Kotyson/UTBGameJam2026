@@ -440,3 +440,5 @@ MonoBehaviour:
     typeIndex: 0
   - position: {x: 9, y: 0, z: -3}
     typeIndex: 0
+  - position: {x: 5, y: 0, z: -1}
+    typeIndex: 1
