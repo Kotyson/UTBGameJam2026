@@ -48,6 +48,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 54eb20547f6143348a3f3b7d13d79077, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 24823afedff60c340a5d81efd59dd355, type: 2}
     - target: {fileID: 919132149155446097, guid: 54eb20547f6143348a3f3b7d13d79077, type: 3}
       propertyPath: m_Name
       value: skala_1
@@ -110,5 +114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DestructibleBlock
   blockData: {fileID: 11400000, guid: 62a2c89170c0e26488970f6749d7c039, type: 2}
+  isFallingHazard: 0
   shakeDuration: 0.15
   shakeMagnitude: 0.1
+  shrinkSpeed: 5
