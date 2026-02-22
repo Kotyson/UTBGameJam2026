@@ -63,6 +63,12 @@ public class PlayerController : MonoBehaviour
     public Transform holdPoint;
     public float throwForce = 10f;
     public PickupItem heldItem;
+    
+    [Header("UI Settings")]
+    [Tooltip("Drag your Interaction Sprite/Canvas here")]
+    public GameObject interactIndicator; 
+    [Tooltip("How high above the object should the icon float?")]
+    public Vector3 indicatorOffset = new Vector3(0, 1.5f, 0);
 
     [Header("Events")] public UnityEvent onDeath;
 
@@ -77,15 +83,19 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        // If dead or cannot move at all (like during respawn), exit immediately
-        if (!canMove || isDead) return;
+        if (!canMove || isDead) 
+        {
+            // Ensure UI hides if we die
+            if (interactIndicator != null) interactIndicator.SetActive(false);
+            return;
+        }
 
-        // --- ADD THIS STUN CHECK ---
         if (isStunned)
         {
-            currentInputDirection = Vector3.zero; // Stop input
-            animator.SetBool("Mining", false);    // Stop any mining animation
-            return; // Exit Update so we don't process attacks or items
+            currentInputDirection = Vector3.zero;
+            animator.SetBool("Mining", false);
+            if (interactIndicator != null) interactIndicator.SetActive(false); // Hide while stunned
+            return; 
         }
 
         currentInputDirection = GetInput();
@@ -98,11 +108,63 @@ public class PlayerController : MonoBehaviour
     
         HandleItemInput();
         HandleFootsteps();
+        
+        // --- ADD THIS LINE ---
+        UpdateInteractIndicator(); 
+    }
+    
+    private void UpdateInteractIndicator()
+    {
+        if (interactIndicator == null) return;
+
+        IInteractable target = GetNearestInteractable();
+
+        // Check if we have a target AND our logic allows interaction
+        bool canInteractWithTarget = false;
+
+        if (target != null)
+        {
+            if (heldItem != null)
+            {
+                // If holding an item, we ONLY interact if it's a Chest (depositing)
+                if (target is Chest) canInteractWithTarget = true;
+            }
+            else
+            {
+                // If hands are empty, we can interact with anything
+                canInteractWithTarget = true;
+            }
+        }
+
+        if (canInteractWithTarget)
+        {
+            // Cast the interface back to a MonoBehaviour so we can find its physical position in the world
+            MonoBehaviour targetObj = target as MonoBehaviour; 
+            if (targetObj != null)
+            {
+                interactIndicator.SetActive(true);
+                
+                // Snap the indicator above the target
+                interactIndicator.transform.position = targetObj.transform.position + indicatorOffset;
+                
+                // Optional: Make the indicator always face the main camera so it's readable
+                if (Camera.main != null)
+                {
+                    interactIndicator.transform.rotation = Quaternion.LookRotation(interactIndicator.transform.position - Camera.main.transform.position);
+                }
+            }
+        }
+        else
+        {
+            // Hide it if nothing is nearby or if we can't interact
+            interactIndicator.SetActive(false);
+        }
     }
 
     public void AddMoney(int value)
     {
         carriedMoney += value;
+        GameManager.Instance.RefreshUI();
     }
     
     private void FixedUpdate()
@@ -402,6 +464,7 @@ public class PlayerController : MonoBehaviour
         this.enabled = false;
         carriedMoney = 0;
         DropItem();
+        GameManager.Instance.RefreshUI();
         onDeath?.Invoke();
     }
 

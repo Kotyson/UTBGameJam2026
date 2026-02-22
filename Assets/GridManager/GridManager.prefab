@@ -58,4 +58,4 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 0
-  caveRespawnTime: 3
+  caveRespawnTime: 8

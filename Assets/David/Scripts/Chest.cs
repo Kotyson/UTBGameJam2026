@@ -17,6 +17,7 @@ public class Chest : MonoBehaviour, IInteractable
     {
         totalPoints += amount;
         Debug.Log($"[Chest] Pen�ze vlo�eny! +{amount} | Celkem: {totalPoints}");
+        GameManager.Instance.RefreshUI();
     }
     
     public void Interact(PlayerController interactor)
@@ -33,5 +34,6 @@ public class Chest : MonoBehaviour, IInteractable
         {
             DepositItem(owner.heldItem);
         }
+        GameManager.Instance.RefreshUI();
     }
 }
