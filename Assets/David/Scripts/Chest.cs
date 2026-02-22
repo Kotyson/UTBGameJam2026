@@ -36,4 +36,7 @@ public class Chest : MonoBehaviour, IInteractable
         }
         GameManager.Instance.RefreshUI();
     }
+
+
+   
 }
