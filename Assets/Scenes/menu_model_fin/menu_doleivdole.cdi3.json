@@ -1,0 +1,112 @@
+{
+	"Version": 3,
+	"Parameters": [
+		{
+			"Id": "Param",
+			"GroupId": "ParamGroup",
+			"Name": "schaft_mov1"
+		},
+		{
+			"Id": "Param2",
+			"GroupId": "ParamGroup",
+			"Name": "schaft_mov2"
+		},
+		{
+			"Id": "Param11",
+			"GroupId": "ParamGroup",
+			"Name": "pipes_mov1"
+		},
+		{
+			"Id": "Param12",
+			"GroupId": "ParamGroup",
+			"Name": "pipes_mov2"
+		},
+		{
+			"Id": "Param7",
+			"GroupId": "ParamGroup",
+			"Name": "lanternsway"
+		},
+		{
+			"Id": "Param8",
+			"GroupId": "ParamGroup",
+			"Name": "wheelin"
+		},
+		{
+			"Id": "Param9",
+			"GroupId": "ParamGroup",
+			"Name": "movlines"
+		},
+		{
+			"Id": "Param10",
+			"GroupId": "ParamGroup",
+			"Name": "movfilters"
+		},
+		{
+			"Id": "movX",
+			"GroupId": "ParamGroup2",
+			"Name": "movX"
+		},
+		{
+			"Id": "movY",
+			"GroupId": "ParamGroup2",
+			"Name": "movY"
+		},
+		{
+			"Id": "phyuni",
+			"GroupId": "ParamGroup2",
+			"Name": "phyuni"
+		}
+	],
+	"ParameterGroups": [
+		{
+			"Id": "ParamGroup",
+			"GroupId": "",
+			"Name": "mov_env"
+		},
+		{
+			"Id": "ParamGroup2",
+			"GroupId": "",
+			"Name": "mov_char"
+		}
+	],
+	"Parts": [
+		{
+			"Id": "movelines",
+			"Name": "movelines"
+		},
+		{
+			"Id": "frontfilters",
+			"Name": "frontfilters"
+		},
+		{
+			"Id": "elev",
+			"Name": "elev"
+		},
+		{
+			"Id": "bluedude",
+			"Name": "bluedude"
+		},
+		{
+			"Id": "greendude",
+			"Name": "greendude"
+		},
+		{
+			"Id": "wheels",
+			"Name": "wheels"
+		}
+	],
+	"CombinedParameters": [
+		[
+			"Param",
+			"Param2"
+		],
+		[
+			"Param11",
+			"Param12"
+		],
+		[
+			"movX",
+			"movY"
+		]
+	]
+}

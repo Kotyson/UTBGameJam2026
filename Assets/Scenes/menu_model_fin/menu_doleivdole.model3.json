@@ -1,0 +1,23 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "menu_doleivdole.moc3",
+		"Textures": [
+			"menu_doleivdole.4096/texture_00.png"
+		],
+		"Physics": "menu_doleivdole.physics3.json",
+		"DisplayInfo": "menu_doleivdole.cdi3.json"
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": []
+		},
+		{
+			"Target": "Parameter",
+			"Name": "LipSync",
+			"Ids": []
+		}
+	]
+}
