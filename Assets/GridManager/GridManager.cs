@@ -251,6 +251,9 @@ public class GridManager : MonoBehaviour
         runtimeGrid[pos] = selectedTypeIndex; 
         UpdateVisuals(pos);
         RefreshNeighbors(pos);
+#if UNITY_EDITOR
+        UnityEditor.EditorUtility.SetDirty(levelData);
+#endif
     }
 
     private void RemoveTileFromBlueprint(Vector3Int pos)
@@ -266,6 +269,9 @@ public class GridManager : MonoBehaviour
             instances.Remove(pos);
         }
         RefreshNeighbors(pos);
+#if UNITY_EDITOR
+        UnityEditor.EditorUtility.SetDirty(levelData);
+#endif
     }
 
     private void RefreshNeighbors(Vector3Int pos)
